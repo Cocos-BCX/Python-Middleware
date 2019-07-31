@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 from setuptools import setup
 
@@ -17,7 +18,7 @@ setup(
     name='PythonMiddleware',
     version=VERSION,
     description='Python library for Cocos-BCX',
-    long_description=open('README.md').read(),
+    long_description=open('README.md', encoding="utf-8").read(),
     author='UnitedLabs',
     author_email='UnitedLabs@hotmail.com',
     maintainer='UnitedLabs',

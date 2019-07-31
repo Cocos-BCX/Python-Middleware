@@ -2,7 +2,7 @@ default_prefix = "COCOS"
 
 known_chains = {
     "COCOS": {
-        "chain_id": "48882f3481efd7110a953296e570fb73ecc1cbea085e059e7aaee782404383f2",
+        "chain_id": "7d89b84f22af0b150780a2b121aa6c715b19261c8b7fe0fda3a564574ed7d3e9",
         "core_symbol": "COCOS",
         "prefix": "COCOS"},
     # "COCOS": {
