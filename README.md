@@ -46,6 +46,48 @@ config["default_prefix"] = gph.rpc.chain_params["prefix"] # 向钱包数据库�
 gph.wallet.addPrivateKey(privateKey) # 向钱包中添加私钥
 config["default_account"] = yourname # 向钱包数据库中添加默认信息
 ```
+* 示例1：创建钱包，导入账号私钥
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from PythonMiddleware.graphene import Graphene
+from PythonMiddleware.instance import set_shared_graphene_instance
+from PythonMiddleware.storage import configStorage as config
+from pprint import pprint
+
+nodeAddress = "ws://127.0.0.1:8020" 
+gph = Graphene(node=nodeAddress, blocking=True) 
+set_shared_graphene_instance(gph) 
+
+if gph.wallet.created() is False: 
+    gph.newWallet("123456")
+gph.wallet.unlock("123456") 
+
+config["default_prefix"] = gph.rpc.chain_params["prefix"] 
+privateKey="5JHdMwsWkEXsMoz******5S9PsH7QVbFQngJfw"
+gph.wallet.addPrivateKey(privateKey) 
+config["default_account"] = "test1"
+```
+
+* 示例2：调用info
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from PythonMiddleware.graphene import Graphene
+from PythonMiddleware.instance import set_shared_graphene_instance
+from PythonMiddleware.storage import configStorage as config
+from pprint import pprint
+
+nodeAddress = "ws://127.0.0.1:8020" 
+gph = Graphene(node=nodeAddress, blocking=True) 
+set_shared_graphene_instance(gph) 
+
+# 调用info
+pprint(gph.info())
+```
+
 
 使用API
 -------------
