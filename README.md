@@ -1,4 +1,4 @@
-Python Middleware For BCX
+Python Middleware For Cocos—BCX
 ==============
 * [入门](#入门)
 * [使用API](#使用API)
