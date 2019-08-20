@@ -46,52 +46,10 @@ config["default_prefix"] = gph.rpc.chain_params["prefix"] # 向钱包数据库�
 gph.wallet.addPrivateKey(privateKey) # 向钱包中添加私钥
 config["default_account"] = yourname # 向钱包数据库中添加默认信息
 ```
-* 示例1：创建钱包，导入账号私钥
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
-from PythonMiddleware.graphene import Graphene
-from PythonMiddleware.instance import set_shared_graphene_instance
-from PythonMiddleware.storage import configStorage as config
-from pprint import pprint
-
-nodeAddress = "ws://127.0.0.1:8020" 
-gph = Graphene(node=nodeAddress, blocking=True) 
-set_shared_graphene_instance(gph) 
-
-if gph.wallet.created() is False: 
-    gph.newWallet("123456")
-gph.wallet.unlock("123456") 
-
-config["default_prefix"] = gph.rpc.chain_params["prefix"] 
-privateKey="5JHdMwsWkEXsMoz******5S9PsH7QVbFQngJfw"
-gph.wallet.addPrivateKey(privateKey) 
-config["default_account"] = "test1"
-```
-
-* 示例2：调用info
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-from PythonMiddleware.graphene import Graphene
-from PythonMiddleware.instance import set_shared_graphene_instance
-from PythonMiddleware.storage import configStorage as config
-from pprint import pprint
-
-nodeAddress = "ws://127.0.0.1:8020" 
-gph = Graphene(node=nodeAddress, blocking=True) 
-set_shared_graphene_instance(gph) 
-
-# 调用info
-pprint(gph.info())
-```
-
-
-使用API
+API接口
 -------------
-**Graphene实例调用示例：**
+* [钱包相关](#钱包相关)
 * [账户相关](#账户相关)  
 * [资产相关](#资产相关)  
 * [NH资产相关](#NH资产相关)  
@@ -100,6 +58,252 @@ pprint(gph.info())
 * [见证人相关](#见证人相关)  
 * [理事会相关](#理事会相关)  
 * [提议相关](#提议相关)  
+
+----------
+
+### 钱包相关
+* [Graphene创建钱包](#Graphene创建钱包)
+* [wallet创建钱包1](#wallet创建钱包1)
+* [wallet创建钱包2](#wallet创建钱包2)
+* [钱包解锁](#钱包解锁)
+* [钱包锁定](#钱包锁定)
+* [钱包解锁密码修改](#钱包解锁密码修改)
+* [钱包添加私钥](#钱包添加私钥)
+* [钱包获取私钥](#钱包获取私钥)
+* [钱包获取私钥](#钱包获取私钥)
+* [钱包加密私钥](#钱包加密私钥)
+* [钱包解密私钥](#钱包解密私钥)
+* [钱包获取owner、active、memo私钥](#钱包获取owner、active、memo私钥)
+* [私钥获取账户ID](#私钥获取账户ID)
+* [公钥获取账户ID](#公钥获取账户ID)
+* [钱包获取账户信息](#钱包获取账户信息)
+* [获取公钥类型](#获取公钥类型)
+* [获取钱包所有账户](#获取钱包所有账户)
+* [获取钱包所有公钥](#获取钱包所有公钥)
+* [清空钱包私钥](#清空钱包私钥)
+
+
+#### Graphene创建钱包
+    方法：newWallet(pwd)
+    功能：创建钱包
+    参数：pwd：str类型，钱包lock和unlock密码
+    返回值：
+        > 成功：None
+        > 失败：对应错误信息
+    说明：
+        > 此接口是对wallet.newWallet接口的封装，并不是wallet api
+        > 本质还是调用wallet创建钱包
+        > 钱包创建完后，可以通过Graphene::instance.wallet直接使用钱包instance，操作钱包的接口。
+
+#### wallet创建钱包1
+    方法：newWallet(pwd)
+    功能：创建钱包
+    参数：pwd：str类型，钱包lock和unlock密码
+    返回值：
+        > 成功：None
+        > 失败：对应错误信息
+
+#### wallet创建钱包2
+    方法：create(pwd)
+    功能：创建钱包，Alias for newWallet()
+    参数：
+        > pwd：str类型，钱包lock和unlock密码
+    返回值：
+        > 成功：None
+        > 失败：对应错误信息
+
+#### 钱包解锁
+    方法：unlock(pwd=None)
+    功能：解锁钱包
+    参数：pwd -- str类型，钱包密码
+    返回值：
+        > 成功：None
+        > 失败：对应错误信息
+
+#### 钱包锁定
+    方法：lock()
+    功能：解锁钱包
+    参数：无
+    返回值：
+        > 成功：None
+        > 失败：对应错误信息
+
+#### 钱包解锁密码修改
+    方法：changePassphrase(new_pwd)
+    功能：修改钱包解锁密码
+    参数：pwd：str类型，要修改的钱包新密码
+    返回值：
+        > 成功：None
+        > 失败：对应错误信息
+
+#### 钱包添加私钥
+    方法：addPrivateKey(wif)
+    功能：修改钱包解锁密码
+    参数：wif：str类型，私钥
+
+####  钱包获取私钥
+    方法：getPrivateKeyForPublicKey(pub)
+    功能：从钱包获取公钥对应的私钥
+    参数：pub：str类型，公钥
+
+#### 钱包获取私钥
+    方法：removePrivateKeyFromPublicKey(pub)
+    功能：从钱包移除公钥对应的私钥
+    参数：pub：str类型，公钥
+
+#### 钱包加密私钥
+    方法：encrypt_wif(wif)
+    功能：对私钥进行加密，
+    参数：wif：str类型，私钥
+    返回值：加密过的私钥，str类型
+
+#### 钱包解密私钥
+    方法：decrypt_wif(encwif)
+    功能：对加密过的私钥进行解密
+    参数：encwif：str类型，加密过的私钥
+    返回值：私钥，str类型
+
+#### 钱包获取owner、active、memo私钥
+    方法：
+        > getOwnerKeyForAccount(name)
+        > getActiveKeyForAccount(name)
+        > getMemoKeyForAccount(name)
+    功能：通过账户名，获取owner、active、memo私钥
+    参数：name：str类型，账户名
+    返回值：私钥，str类型
+
+#### 私钥获取账户ID
+    方法：getAccountFromPrivateKey(wif)
+    功能：通过私钥，获取账户ID
+    参数：wif：str类型，私钥
+    返回值：私钥，str类型
+
+#### 公钥获取账户ID
+    方法：getAccountFromPublicKey(pub)
+    功能：通过公钥，获取账户ID
+    参数：pub：str类型，公钥
+    返回值：公钥，str类型
+
+#### 钱包获取账户信息
+    方法：getAccount(pub)
+    功能：通过公钥，获取账户信息
+    参数：pub：str类型，公钥
+
+
+#### 获取公钥类型
+    方法：getKeyType(account, pub)
+    功能：获取公钥类型
+    参数：
+        > account：Account类型，账户
+        > pub：str类型，公钥
+    返回值：str类型
+  
+#### 获取钱包所有账户
+    方法：getAccounts()
+    功能：通过钱包里的所有账户信息
+    参数：无
+    返回值：Account 数组
+
+#### 获取钱包所有公钥
+    方法：getPublicKeys()
+    功能：获取钱包里所有公钥
+    参数：无
+    返回值：str数组
+
+#### 清空钱包私钥
+    方法：wipe()
+    功能：清空导入钱包的所有私钥
+    参数：无
+
+示例：
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from PythonMiddleware.graphene import Graphene
+from PythonMiddleware.instance import set_shared_graphene_instance
+from PythonMiddleware.storage import configStorage as config
+from pprint import pprint
+from PythonMiddleware.account import Account
+
+nodeAddress = "ws://127.0.0.1:8020" 
+gph = Graphene(node=nodeAddress, blocking=True) 
+set_shared_graphene_instance(gph) 
+
+#创建钱包1
+#可以通过gph.wallet 直接使用钱包instance，操作钱包的接口。
+if gph.wallet.created() is False: 
+    gph.newWallet("123456")
+
+#创建钱包2
+if gph.wallet.created() is False: 
+    gph.wallet.create("123456")
+
+#钱包解锁
+gph.wallet.unlock("123456")
+
+#钱包锁住
+gph.wallet.lock()
+
+#查看钱包锁定状态
+#返回: False 或 True
+pprint(gph.wallet.locked())
+
+#更改钱包解锁密码
+#钱包需要unlock状态
+gph.wallet.changePassphrase("654321")
+
+#查看钱包导入账户信息
+pprint(gph.wallet.getAccounts())
+
+#钱包导入私钥
+privateKey="5JWKbGLfkZNtnSAb7fuk1pD4jsdPyMpJz4jyhwgu8RBk9RNzDYA"
+pub="COCOS78WwFk5YJVoCVa97NAKVALVZdhnYUdD2oHe2LCiX2KZaYNf4G8"
+gph.wallet.addPrivateKey(privateKey) 
+
+#钱包获取导入的私钥
+pprint(gph.wallet.getPrivateKeyForPublicKey(pub))
+
+#加密私钥
+encWif = gph.wallet.encrypt_wif(privateKey)
+pprint(encWif)
+
+#解密私钥
+pprint(gph.wallet.decrypt_wif(encWif) == privateKey)
+
+#钱包移除导入的私钥
+gph.wallet.removePrivateKeyFromPublicKey(pub)
+
+#移除导入的账户None
+gph.wallet.removeAccount(None)
+gph.wallet.removeAccount('test13')
+
+#获取账号的owner private key
+pprint(gph.wallet.getOwnerKeyForAccount('test13'))
+pprint(gph.wallet.getMemoKeyForAccount('test13'))
+pprint(gph.wallet.getActiveKeyForAccount('test13'))
+
+#获取账户ID
+pprint(gph.wallet.getAccountFromPrivateKey(privateKey))
+pprint(gph.wallet.getAccountFromPublicKey(pub))
+
+#获取账户信息
+pprint(gph.wallet.getAccount(pub))
+
+#获取钱包所有账户信息
+pprint(gph.wallet.getAccounts())
+
+#获取钱包所有公钥
+pprint(gph.wallet.getPublicKeys())
+
+#获取钱包公钥类型
+pprint(gph.wallet.getKeyType(Account('test13'), pub))
+
+#清除钱包所有私钥
+#  慎用！！！
+#gph.wallet.wipe()
+```
+
 
 ###### 账户相关
 
@@ -110,13 +314,69 @@ pprint(gph.info())
 方法：create_account  
 功能：创建一个账户并将私钥导入到钱包  
 参数：  
-    account_name：账户名注册规则，/^[a-z][a-z0-9\.-]{4,63}$/，小写字母开头+数字或小写字母或点.或短横线-，长度4至63  
+   account_name：账户名注册规则，/^[a-z][a-z0-9\.-]{4,63}$/，小写字母开头+数字或小写字母或点.或短横线-，长度4至63  
     password：账户密码  
 注：只有终身账户才可以创建账户  
 示例：  
 ```python
-pprint(gph.create_account("test3", "password"))
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from PythonMiddleware.graphene import Graphene
+from PythonMiddleware.instance import set_shared_graphene_instance
+from PythonMiddleware.storage import configStorage as config
+from pprint import pprint
+
+nodeAddress = "ws://127.0.0.1:8020" #Modify to the blockchain node you are using
+gph = Graphene(node=nodeAddress, blocking=True) 
+set_shared_graphene_instance(gph) 
+
+if gph.wallet.created() is False: 
+    gph.newWallet("123456")
+gph.wallet.unlock("123456") 
+
+pprint(gph.create_account(account_name="test14", password="123456", proxy_account="init0"))
 ```
+示例输出：
+```text
+chain_params {'prefix': 'COCOS', 'chain_id': '725fdc4a727a6aa84aea37376bb51e419febbf0f59830c05f3e82f607631e5fc', 'core_symbol': 'COCOS'}
+tx.buffer>>>: {'expiration': '2019-08-16T07:16:38', 'signatures': ['1f5823d16f972a4407544a2388a014a3070caa0b073dc8a7310a26f09534db300d7892b0df9720fe478808b5f5ac317921ad1bc87f1f29317f4767e5b6336f2726'], 'operations': [[5, {'options': {'votes': [], 'num_witness': 0, 'voting_account': '1.2.4', 'extensions': [], 'memo_key': 'COCOS8GY2vkoK8gpLTuDxNfzD6JjwqYDmCRnpoUfZ78J4z8ChdcZi6h', 'num_committee': 0}, 'fee': {'amount': 514160, 'asset_id': '1.3.0'}, 'referrer_percent': 5000, 'referrer': '1.2.4', 'extensions': [], 'registrar': '1.2.4', 'owner': {'extensions': [], 'account_auths': [], 'weight_threshold': 1, 'key_auths': [['COCOS6gpgm7FqpeZUC8KuG5JuwN5Fe6iV7Cr3U3SJEYcsXQZ8S7ygUJ', '1']]}, 'active': {'extensions': [], 'account_auths': [], 'weight_threshold': 1, 'key_auths': [['COCOS8GY2vkoK8gpLTuDxNfzD6JjwqYDmCRnpoUfZ78J4z8ChdcZi6h', '1']]}, 'name': 'test14'}]], 'extensions': [], 'ref_block_num': 34508, 'ref_block_prefix': 1299955552}
+tx======>>: {'expiration': '2019-08-16T07:16:38', 'signatures': ['1f5823d16f972a4407544a2388a014a3070caa0b073dc8a7310a26f09534db300d7892b0df9720fe478808b5f5ac317921ad1bc87f1f29317f4767e5b6336f2726'], 'operations': [[5, {'options': {'votes': [], 'num_witness': 0, 'voting_account': '1.2.4', 'extensions': [], 'memo_key': 'COCOS8GY2vkoK8gpLTuDxNfzD6JjwqYDmCRnpoUfZ78J4z8ChdcZi6h', 'num_committee': 0}, 'fee': {'amount': 514160, 'asset_id': '1.3.0'}, 'referrer_percent': 5000, 'referrer': '1.2.4', 'extensions': [], 'registrar': '1.2.4', 'owner': {'extensions': [], 'account_auths': [], 'weight_threshold': 1, 'key_auths': [['COCOS6gpgm7FqpeZUC8KuG5JuwN5Fe6iV7Cr3U3SJEYcsXQZ8S7ygUJ', '1']]}, 'active': {'extensions': [], 'account_auths': [], 'weight_threshold': 1, 'key_auths': [['COCOS8GY2vkoK8gpLTuDxNfzD6JjwqYDmCRnpoUfZ78J4z8ChdcZi6h', '1']]}, 'name': 'test14'}]], 'extensions': [], 'ref_block_num': 34508, 'ref_block_prefix': 1299955552}
+transaction>>>: {'expiration': '2019-08-16T07:16:38', 'signatures': ['1f5823d16f972a4407544a2388a014a3070caa0b073dc8a7310a26f09534db300d7892b0df9720fe478808b5f5ac317921ad1bc87f1f29317f4767e5b6336f2726'], 'operations': [[5, {'options': {'votes': [], 'num_witness': 0, 'voting_account': '1.2.4', 'extensions': [], 'memo_key': 'COCOS8GY2vkoK8gpLTuDxNfzD6JjwqYDmCRnpoUfZ78J4z8ChdcZi6h', 'num_committee': 0}, 'fee': {'amount': 514160, 'asset_id': '1.3.0'}, 'referrer_percent': 5000, 'referrer': '1.2.4', 'extensions': [], 'registrar': '1.2.4', 'owner': {'extensions': [], 'account_auths': [], 'weight_threshold': 1, 'key_auths': [['COCOS6gpgm7FqpeZUC8KuG5JuwN5Fe6iV7Cr3U3SJEYcsXQZ8S7ygUJ', '1']]}, 'active': {'extensions': [], 'account_auths': [], 'weight_threshold': 1, 'key_auths': [['COCOS8GY2vkoK8gpLTuDxNfzD6JjwqYDmCRnpoUfZ78J4z8ChdcZi6h', '1']]}, 'name': 'test14'}]], 'extensions': [], 'ref_block_num': 34508, 'ref_block_prefix': 1299955552}
+
+['c4d9e437f4a9f7f717ba4b5b61f0646b49a6bae98f83d614db5b7e33abefb14f',
+ {'block': 34509,
+  'expiration': '2019-08-16T07:16:38',
+  'extensions': [],
+  'operation_results': [[2, {'real_running_time': 182, 'result': '1.2.17'}]],
+  'operations': [[5,
+                  {'active': {'account_auths': [],
+                              'address_auths': [],
+                              'key_auths': [['COCOS8GY2vkoK8gpLTuDxNfzD6JjwqYDmCRnpoUfZ78J4z8ChdcZi6h',
+                                             1]],
+                              'weight_threshold': 1},
+                   'extensions': {},
+                   'fee': {'amount': 514160, 'asset_id': '1.3.0'},
+                   'name': 'test14',
+                   'options': {'extensions': [],
+                               'memo_key': 'COCOS8GY2vkoK8gpLTuDxNfzD6JjwqYDmCRnpoUfZ78J4z8ChdcZi6h',
+                               'num_committee': 0,
+                               'num_witness': 0,
+                               'votes': [],
+                               'voting_account': '1.2.4'},
+                   'owner': {'account_auths': [],
+                             'address_auths': [],
+                             'key_auths': [['COCOS6gpgm7FqpeZUC8KuG5JuwN5Fe6iV7Cr3U3SJEYcsXQZ8S7ygUJ',
+                                            1]],
+                             'weight_threshold': 1},
+                   'referrer': '1.2.4',
+                   'referrer_percent': 5000,
+                   'registrar': '1.2.4'}]],
+  'ref_block_num': 34508,
+  'ref_block_prefix': 1299955552,
+  'signatures': ['1f5823d16f972a4407544a2388a014a3070caa0b073dc8a7310a26f09534db300d7892b0df9720fe478808b5f5ac317921ad1bc87f1f29317f4767e5b6336f2726']}]
+```
+
 方法：upgrade_account  
 功能：将账户升级为终身账户，可以创建子账户，此操作需要消耗一定的手续费  
 参数：  
@@ -125,6 +385,7 @@ pprint(gph.create_account("test3", "password"))
 ```python
 pprint(gph.upgrade_account("test1"))
 ```
+
 
 ###### 资产相关
 
