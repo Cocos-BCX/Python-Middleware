@@ -276,12 +276,12 @@ gph.wallet.removePrivateKeyFromPublicKey(pub)
 
 #移除导入的账户None
 gph.wallet.removeAccount(None)
-gph.wallet.removeAccount('test13')
+gph.wallet.removeAccount('test1')
 
 #获取账号的owner private key
-pprint(gph.wallet.getOwnerKeyForAccount('test13'))
-pprint(gph.wallet.getMemoKeyForAccount('test13'))
-pprint(gph.wallet.getActiveKeyForAccount('test13'))
+pprint(gph.wallet.getOwnerKeyForAccount('test1'))
+pprint(gph.wallet.getMemoKeyForAccount('test1'))
+pprint(gph.wallet.getActiveKeyForAccount('test1'))
 
 #获取账户ID
 pprint(gph.wallet.getAccountFromPrivateKey(privateKey))
@@ -297,7 +297,7 @@ pprint(gph.wallet.getAccounts())
 pprint(gph.wallet.getPublicKeys())
 
 #获取钱包公钥类型
-pprint(gph.wallet.getKeyType(Account('test13'), pub))
+pprint(gph.wallet.getKeyType(Account('test1'), pub))
 
 #清除钱包所有私钥
 #  慎用！！！
@@ -305,7 +305,7 @@ pprint(gph.wallet.getKeyType(Account('test13'), pub))
 ```
 
 
-###### 账户相关
+### 账户相关
 
 
 ----------
@@ -387,7 +387,7 @@ pprint(gph.upgrade_account("test1"))
 ```
 
 
-###### 资产相关
+### 资产相关
 
 
 ----------
@@ -454,7 +454,7 @@ pprint(gph.asset_issue(10000, "TESTS", "test1", account="test1"))
 
 ```
 
-###### NH资产相关
+### NH资产相关
 
 
 ----------
@@ -503,7 +503,7 @@ pprint(gph.create_nh_asset("test2", "XXX", "FLY", '{"name":"tom"}', "test1"))
 pprint(gph.create_nh_asset_order("official-account", 1, "1.3.0", "4.2.1", " ", 100, "1.3.0", "test1"))
 ```
 
-###### 合约相关
+### 合约相关
 
 
 ----------
@@ -537,7 +537,7 @@ value_list = [
 pprint(gph.call_contract_function("1.16.1", "draw", value_list=value_list, account="test1"))
 
 ```
-###### 市场相关
+### 市场相关
 
 
 ----------
@@ -563,7 +563,8 @@ pprint(gph.limit_order_create(1, "1.3.0", 1, "1.3.1", account="test1"))
 ```python
 pprint(gph.limit_order_cancel(["1.7.1"], account="test1"))
 ```
-###### 见证人相关
+
+### 见证人相关
 
 
 ----------
@@ -586,7 +587,7 @@ pprint(gph.create_witness("test2", "", "COCOS5YnQru8mtYo9HkckwnuPe8fUcE4LSxdCfVh
 ```python
 pprint(gph.disapprove_worker(["1.14.1"], "test1"))
 ```
-###### 理事会相关
+### 理事会相关
 
 
 ----------
@@ -608,7 +609,7 @@ pprint(gph.committee_member_create(" ", "test2"))
 ```python
 pprint(gph.committee_member_update(" ", "test2"))
 ```
-###### 提议相关
+### 提议相关
 
 
 ----------
@@ -669,6 +670,7 @@ print(gph.rpc.get_object("1.2.18")) # 获取id为"1.2.17"的账户信息
 ```python
 print(gph.rpc.get_contract("1.16.0")) # 获取id为"1.16.0"的合约信息
 ```
+
 Main-Packages
 -------------
 **PythonMiddleware**
