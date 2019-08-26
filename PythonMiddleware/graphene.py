@@ -430,7 +430,7 @@ class Graphene(object):
         additional_active_keys=[],
         additional_owner_accounts=[],
         additional_active_accounts=[],
-        proxy_account="proxy-to-self",
+        proxy_account="null-account",
         storekeys=True,
     ):
         """ Create new account on graphene
@@ -547,7 +547,7 @@ class Graphene(object):
             active_accounts_authority.append([addaccount["id"], 1])
 
         # voting account
-        voting_account = Account(proxy_account or "proxy-to-self")
+        voting_account = Account(proxy_account or "null-account", graphene_instance=self)
 
         op = {
             "fee": {"amount": 0, "asset_id": "1.3.0"},
