@@ -207,7 +207,7 @@ class Graphene(object):
             self.txbuffer.sign()
             # return self.txbuffer.json()
             print("tx.buffer>>>:",self.txbuffer.json())
-            # return self.txbuffer.broadcast()
+            return self.txbuffer.broadcast()
 
     def sign(self, tx=None, wifs=[]):
         """ Sign a provided transaction witht he provided key(s)
