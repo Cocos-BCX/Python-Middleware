@@ -458,50 +458,158 @@ pprint(gph.asset_issue(10000, "TESTS", "test1", account="test1"))
 
 
 ----------
-方法：register_nh_asset_creator  
+**方法：register_nh_asset_creator**  
+
+原型：
+```python
+    def register_nh_asset_creator(self, account=None):  
+```
 功能：将当前账户注册成为开发者  
 参数：  
-    account：注册者账户名
+> account：注册者账户名  
+
 示例：
 ```python
-pprint(gph.register_nh_asset_creator("test2"))
+account="nicotest"
+pprint(gph.register_nh_asset_creator(account))
 ```
-方法：create_world_view  
+
+**方法：create_world_view**  
+
+原型：
+```python
+    def create_world_view(self, world_view, account=None):  
+```
 功能：创建支持的NH资产世界观，向区块链系统注册当前账号（通常为游戏的账号）支持的NH资产世界观  
 参数：  
-    world_view：世界观名称  
-    account：创建者账户名  
+> world_view：世界观名称  
+> account：创建者账户名  
+
 示例：
 ```python
-pprint(gph.create_world_view("DRBALL", "test1"))
+account="nicotest"
+#2019-09-19T02:45:06 register_nh_asset_creator_operation nicotest fee: 1 COCOS   result: 4.0.1 
+pprint(gph.create_world_view("snacktest", account))
 ```
-方法：create_nh_asset  
+
+**方法：create_nh_asset**  
+
+原型：
+```python
+    def create_nh_asset(self, owner, assetID, world_view, describe, account=None):
+```
 功能：创建一个唯一的NH资产，具有唯一性  
+
 参数：  
-    owner：指定NH资产拥有者(NH资产归属权账户，默认为NH资产创建者)  
-    assetID：当前NH资产交易时，使用的资产符号  
-    world_view：世界观  
-    describe：当前NH资产的具体内容描述，由制造者定义  
-    account：创建者
+> owner：指定NH资产拥有者(NH资产归属权账户，默认为NH资产创建者)  
+> assetID：当前NH资产交易时，使用的资产符号  
+> world_view：世界观  
+> describe：当前NH资产的具体内容描述，由创建者定义  
+> account：创建者  
+
 示例：
 ```python
-pprint(gph.create_nh_asset("test2", "XXX", "FLY", '{"name":"tom"}', "test1"))
+account="nicotest"
+#2019-09-19T02:45:26 create_world_view_operation nicotest fee: 1 COCOS   result: 4.1.1 
+pprint(gph.create_nh_asset(account, "COCOS", "snacktest", '{"name":"test1"}', account))
 ```
-方法：create_nh_asset_order  
+
+**方法：delete_nh_asset**  
+
+原型：
+```python
+    def delete_nh_asset(self, asset_id, account=None):  
+```
+功能：删除非同质资产  
+参数：
+> asset_id: 非同质资产ID  
+> account: 操作付费账户  
+
+示例：
+```python
+account="nicotest"
+pprint(gph.delete_nh_asset("4.2.4", account))
+```
+
+**方法：transfer_nh_asset**  
+
+原型：
+```python
+    def transfer_nh_asset(self, to, nh_asset_id, account=None):  
+```
+功能：转移非同质资产 将自己拥有的非同质资产转移给另外一个账户  
+参数：
+> to：to account，非同质资产的接收账户  
+> nh_asset_id: 非同质资产ID  
+> account: from account，非同质资产转出账户  
+
+示例：
+```python
+account="nicotest"
+#2019-09-19T06:08:46 create_nh_asset_operation nicotest fee: 1 COCOS   result: 4.2.5
+pprint(gph.transfer_nh_asset("test1", "4.2.5", account))
+```
+
+**方法：create_nh_asset_order**  
+
+原型：
+```python
+    def create_nh_asset_order(self, otcaccount, pending_order_fee_amount, pending_order_fee_asset, nh_asset, memo, price_amount, price, account=None):  
+```
 功能：卖出NH资产  
 参数：  
-    otcaccount：OTC交易平台账户，用于收取挂单费用  
-    pending_order_fee_amount：挂单费用数量，用户向OTC平台账户支付的挂单费用  
-    pending_order_fee_asset：挂单费用所用资产符号或ID，用户向OTC平台账户支付的挂单费用  
-    nh_asset：NH资产ID  
-    memo：挂单备注信息  
-    price_amount：商品挂单价格数量  
-    price：商品挂单价格所用资产符号或ID  
-    account：挂单人  
+> otcaccount：OTC交易平台账户，用于收取挂单费用  
+> pending_order_fee_amount：挂单费用数量，用户向OTC平台账户支付的挂单费用  
+> pending_order_fee_asset：挂单费用所用资产符号或ID，用户向OTC平台账户支付的挂单费用  
+> nh_asset：NH资产ID  
+> memo：挂单备注信息  
+> price_amount：商品挂单价格数量  
+> price：商品挂单价格所用资产符号或ID  
+> account：挂单人  
+
 示例：
 ```python
-pprint(gph.create_nh_asset_order("official-account", 1, "1.3.0", "4.2.1", " ", 100, "1.3.0", "test1"))
+account="nicotest"
+#2019-09-19T05:27:40 create_nh_asset_operation nicotest fee: 1 COCOS   result: 4.2.4 
+pprint(gph.create_nh_asset_order("test1", 1, "1.3.0", "4.2.4", " sell nh asset order test ", 100, "1.3.0", account))
 ```
+
+**方法：cancel_nh_asset_order**  
+
+原型：
+```python
+    def cancel_nh_asset_order(self, order, account=None):  
+```
+功能：取消NH资产订单  
+参数：
+> order: 非同质资产订单ID  
+> account: 操作付费账户  
+
+示例：
+```python
+account="nicotest"
+#2019-09-19T05:29:16 create_nh_asset_order_operation nicotest fee: 1 COCOS   result: 4.3.1 
+pprint(gph.cancel_nh_asset_order("4.3.1", account))
+```
+
+**方法：fill_nh_asset_order**  
+
+原型：
+```python
+    def fill_nh_asset_order(self, order, account=None):
+```
+功能：购买非同质资产  
+参数：
+> order: 非同质资产出售单 ID  
+> account: 购买者  
+
+示例：
+```python
+account="nicotest"
+#2019-09-19T06:20:38 create_nh_asset_order_operation nicotest fee: 1 COCOS   result: 4.3.2 
+pprint(gph.fill_nh_asset_order("4.3.2", account))
+```
+
 
 ### 合约相关
 
