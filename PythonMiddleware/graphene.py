@@ -2038,33 +2038,6 @@ class Graphene(object):
         })
         return self.finalizeOp(op, account, "active")
 
-    def relate_nh_asset(self, parent=None, child=None, contract=None, relate=True, account=None):
-        # if not nh_asset_creator:
-        #     raise ValueError("You need to provide asset creater")
-        # if not parent:
-        #     parent = None
-        # if not child:
-        #     child = None
-        # if not contract:
-        #     contract = None
-        if not account:
-            if "default_account" in config:
-                account = config["default_account"]
-            else:
-                raise ValueError("You need to provide account")
-        account = Account(account, graphene_instance=self)
-        # nh_asset_creator = Account(nh_asset_creator)
-
-        op = operations.Relate_nh_asset(**{
-            "fee": {"amount": 0, "asset_id": "1.3.0"},
-            "nh_asset_creator": account["id"],
-            "parent": parent,
-            "child": child,
-            "contract": contract,
-            "relate": relate
-        })
-        return self.finalizeOp(op, account, "active")
-
     def delete_nh_asset(self, asset_id, account=None):
         if not account:
             if "default_account" in config:
