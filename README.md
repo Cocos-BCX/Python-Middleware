@@ -662,13 +662,14 @@ pprint(gph.call_contract_function("1.16.1", "draw", value_list=value_list, accou
 ----------
 方法：limit_order_create  
 功能：创建在给定市场中的订单  
-参数：
-    amount(int)：出售的代币数量  
-    asset：出售的资产ID或代币符号  
-    min_amount(int)：所要求获取的代币的最低数量  
-    min_amount_asset：所要求获取的资产ID或代币符号  
-    fill(bool)：默认为False，如果这个标志被设置为True，那么这个订单必须被完整的购买或者被拒绝  
-    account：出售者账户名  
+参数：  
+> amount(int)：出售的代币数量  
+> asset：出售的资产ID或代币符号  
+> min_amount(int)：所要求获取的代币的最低数量  
+> min_amount_asset：所要求获取的资产ID或代币符号  
+> fill(bool)：默认为False，如果这个标志被设置为True，那么这个订单必须被完整的购买或者被拒绝  
+> account：出售者账户名  
+
 示例：
 ```python
 pprint(gph.limit_order_create(1, "1.3.0", 1, "1.3.1", account="test1"))
@@ -676,8 +677,9 @@ pprint(gph.limit_order_create(1, "1.3.0", 1, "1.3.1", account="test1"))
 方法：limit_order_cancel  
 功能：取消您在给定市场中的订单  
 参数：  
-    order_number(list)：要取消的限价单的ID  
-    account：操作人账户名  
+> order_number(list)：要取消的限价单的ID  
+> account：操作人账户名  
+
 示例：
 ```python
 pprint(gph.limit_order_cancel(["1.7.1"], account="test1"))
@@ -690,9 +692,10 @@ pprint(gph.limit_order_cancel(["1.7.1"], account="test1"))
 方法：create_witness  
 功能：创建见证人候选人  
 参数：  
-    account_name：见证人候选人账户  
-    url：见证人网页链接  
-    key：见证人块签名公钥  
+> account_name：见证人候选人账户  
+> url：见证人网页链接  
+> key：见证人块签名公钥  
+
 示例：
 ```python
 pprint(gph.create_witness("test2", "", "COCOS5YnQru8mtYo9HkckwnuPe8fUcE4LSxdCfVheqBj9fMMK5zwiHb"))
@@ -700,8 +703,9 @@ pprint(gph.create_witness("test2", "", "COCOS5YnQru8mtYo9HkckwnuPe8fUcE4LSxdCfVh
 方法：approve_witness  
 功能：为见证人候选人投票  
 参数：  
-    witnesses(list)：见证人账户名或见证人ID  
-    account：投票账户名  
+> witnesses(list)：见证人账户名或见证人ID  
+> account：投票账户名  
+
 示例：
 ```python
 pprint(gph.disapprove_worker(["1.14.1"], "test1"))
@@ -713,17 +717,20 @@ pprint(gph.disapprove_worker(["1.14.1"], "test1"))
 方法：committee_member_create  
 功能：创建理事会候选人  
 参数：  
-    url：网页链接  
-    account：理事会候选人的账户  
+> url：网页链接  
+> account：理事会候选人的账户  
+> 
 示例：
 ```python
 pprint(gph.committee_member_create(" ", "test2"))
 ```
+
 方法：committee_member_update  
 功能：跟新理事会候选人  
 参数：  
-    new_url：新的网页链接  
-    account：更新的理事会候选人的账户  
+> new_url：新的网页链接  
+> account：更新的理事会候选人的账户  
+> 
 示例：
 ```python
 pprint(gph.committee_member_update(" ", "test2"))
@@ -735,23 +742,29 @@ pprint(gph.committee_member_update(" ", "test2"))
 方法：relate_world_view  
 功能：关联世界观，开发者只有在关联了某一个世界观后，才可以创建这个世界观的NH资产，该操作需要通过提议来完成，需要此世界观的创建者审批  
 参数：  
-    world_view：世界观名称  
-    account：关联人账户名  
+> world_view：世界观名称  
+> account：关联人账户名  
+> 
 示例：
 ```python
 pprint(gph.relate_world_view("DRBALL", "test2"))
 ```
+
 方法：approveproposal  
 功能：批准其他用户关联自己的世界观的提议  
 参数：  
-    proposal_ids(list)：提议ID  
-    account：更新提议的账户  
+> proposal_ids(list)：提议ID  
+> account：更新提议的账户  
+> 
 示例：
 ```python
 pprint(gph.approveproposal(["1.10.1"], "test1"))
 ```
 
+--------
+
 **钱包api调用示例：**  
+
 方法：unlock  
 功能：解锁钱包，进行相关钱包操作  
 参数：  
