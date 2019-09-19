@@ -615,24 +615,36 @@ pprint(gph.fill_nh_asset_order("4.3.2", account))
 
 
 ----------
-方法：create_contract  
+**方法：create_contract**  
+原型：
+```python
+    def create_contract(self, name, data, con_authority, account=None):
+```  
 功能：创建智能合约  
 参数：  
-    name：合约名，正则/^[a-z][a-z0-9\.-]{4,63}$/，首字母开头+字母或数字或点.或短横线-，长度4至63  
-    data：合约lua代码  
-    con_authority：合约权限(一对公私钥中的公钥publicKey)  
-    account：合约创建者  
+> name：合约名，正则/^[a-z][a-z0-9\.-]{4,63}$/，首字母开头+字母或数字或点.或短横线-，长度4至63  
+> data：合约lua代码  
+> con_authority：合约权限(一对公私钥中的公钥publicKey)  
+> account：合约创建者  
+
 示例：
 ```python
 print(gph.create_contract("contract.test01", data=data, con_authority="COCOS6esv8d6u2eqzKyiQvCYJa6XK74c7BrmzUqL4Z7zfhtvB4dbLh4", account="developer"))
 ```
-方法：call_contract_function  
+
+**方法：call_contract_function**  
+
+原型：  
+```python
+    def call_contract_function(self, contract, function, value_list, account=None):
+```
 功能：调用合约函数接口  
 参数：  
-    contract：合约名称或者合约ID  
-    function：合约中函数名称  
-    value_list(list)：调用合约函数的参数列表  
-    account：调用者账户名  
+> contract：合约名称或者合约ID  
+> function：合约中函数名称  
+> value_list(list)：调用合约函数的参数列表  
+> account：调用者账户名  
+
 value_list参数示例：  
 ```Python
 value_list = [
@@ -643,7 +655,6 @@ value_list = [
 示例：
 ```python
 pprint(gph.call_contract_function("1.16.1", "draw", value_list=value_list, account="test1"))
-
 ```
 ### 市场相关
 
