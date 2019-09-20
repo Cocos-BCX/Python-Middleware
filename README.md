@@ -146,7 +146,7 @@ API接口
     功能：从钱包获取公钥对应的私钥
     参数：pub：str类型，公钥
 
-#### 钱包获取私钥
+#### 钱包移除私钥
     方法：removePrivateKeyFromPublicKey(pub)
     功能：从钱包移除公钥对应的私钥
     参数：pub：str类型，公钥
@@ -316,7 +316,11 @@ pprint(gph.wallet.getKeyType(Account('test1'), pub))
 参数：  
    account_name：账户名注册规则，/^[a-z][a-z0-9\.-]{4,63}$/，小写字母开头+数字或小写字母或点.或短横线-，长度4至63  
     password：账户密码  
-注：只有终身账户才可以创建账户  
+说明：  
+* 只有终身账户才可以创建账户  
+* 账号有owner key，active key，memo key，新创建账号的owner key 和active key不同，active key和memo key相同。在调用返回结果的operations里可以查看到对应key的公钥。
+* 创建好的账号秘钥保存在钱包里面，请及时使用**getPrivateKeyForPublicKey**获取账号秘钥进行备份，避免秘钥丢失。
+
 示例：  
 ```python
 #!/usr/bin/env python3
