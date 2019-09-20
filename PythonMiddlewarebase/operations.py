@@ -228,7 +228,6 @@ class Asset_create(GrapheneObject):
                 ('precision', Uint8(kwargs["precision"])),
                 ('common_options', AssetOptions(kwargs["common_options"])),
                 ('bitasset_opts', bitasset_opts),
-                ('is_prediction_market', Bool(kwargs["is_prediction_market"])),
                 ('extensions', Set([]))
             ]))
 

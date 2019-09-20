@@ -249,18 +249,6 @@ class AssetOptions(GrapheneObject):
             if len(args) == 1 and len(kwargs) == 0:
                 kwargs = args[0]
 
-            # Sorting
-            for key in [
-                "whitelist_authorities",
-                "blacklist_authorities",
-                "whitelist_markets",
-                "blacklist_markets"
-            ]:
-                kwargs[key] = sorted(
-                    set(kwargs[key]),
-                    key=lambda x: int(x.split(".")[2]),
-                )
-
             super().__init__(OrderedDict([
                 ('max_supply', Uint64(kwargs["max_supply"])),
                 ('market_fee_percent', Uint16(kwargs["market_fee_percent"])),
@@ -268,14 +256,6 @@ class AssetOptions(GrapheneObject):
                 ('issuer_permissions', Uint16(kwargs["issuer_permissions"])),
                 ('flags', Uint16(kwargs["flags"])),
                 ('core_exchange_rate', Price(kwargs["core_exchange_rate"])),
-                ('whitelist_authorities',
-                    Array([ObjectId(o, "account") for o in kwargs["whitelist_authorities"]])),
-                ('blacklist_authorities',
-                    Array([ObjectId(o, "account") for o in kwargs["blacklist_authorities"]])),
-                ('whitelist_markets',
-                    Array([ObjectId(o, "asset") for o in kwargs["whitelist_markets"]])),
-                ('blacklist_markets',
-                    Array([ObjectId(o, "asset") for o in kwargs["blacklist_markets"]])),
                 ('description', String(kwargs["description"])),
                 ('extensions', Set([])),
             ]))

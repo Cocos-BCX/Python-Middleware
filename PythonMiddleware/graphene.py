@@ -576,7 +576,7 @@ class Graphene(object):
         op = operations.Account_create(**op)
         return self.finalizeOp(op, registrar, "active")
 
-    def asset_create(self, symbol, precision, amount, asset, _amount, _asset, common_options, bitasset_opts=None, is_prediction_market=False, account=None):
+    def asset_create(self, symbol, precision, amount, asset, _amount, _asset, common_options, bitasset_opts={}, account=None):
         account = Account(account, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
         _amount = Amount(_amount, _asset, graphene_instance=self)
@@ -596,9 +596,9 @@ class Graphene(object):
             "precision": precision,
             "common_options": common_options,
             "bitasset_opts": bitasset_opts,
-            "is_prediction_market": is_prediction_market,
             "extensions": {}
         })
+
         return self.finalizeOp(op, account["name"], "active")
 
     def asset_update(self, asset, new_options, issuer=None, account=None):
