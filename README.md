@@ -70,7 +70,7 @@ API接口
 * [钱包解锁密码修改](#钱包解锁密码修改)
 * [钱包添加私钥](#钱包添加私钥)
 * [钱包获取私钥](#钱包获取私钥)
-* [钱包获取私钥](#钱包获取私钥)
+* [钱包移除私钥](#钱包移除私钥)
 * [钱包加密私钥](#钱包加密私钥)
 * [钱包解密私钥](#钱包解密私钥)
 * [钱包获取owner、active、memo私钥](#钱包获取owner、active、memo私钥)
@@ -398,6 +398,10 @@ pprint(gph.upgrade_account("test1"))
 
 
 方法：transfer  
+原型：
+```python
+    def transfer(self, to, amount, asset, memo="", account=None):
+```
 功能：向目标对象发送代币  
 参数：  
     to：接收方账户名  
@@ -407,9 +411,37 @@ pprint(gph.upgrade_account("test1"))
     account：发送方账户名  
 示例：
 ```python
-pprint(gph.transfer("test2",100, "1.3.0", " ", "test1"))
+pprint(gph.transfer("test1", 100, "COCOS", defaultAccount))
 ```
+示例执行结果：
+```text
+tx.buffer>>>:  {'signatures': ['1f4d1d80ca69281a9257f6e00ed272475de112cfdc86b5a675aa13ee2e119a8b121099a1bf3a7761f57ea0eff8175cd119376f01223b0ecce21c40008077106e05'], 'ref_block_prefix': 1486205928, 'extensions': [], 'expiration': '2019-09-20T09:19:42', 'ref_block_num': 19218, 'operations': [[0, {'from': '1.2.15', 'amount': {'amount': 10000000, 'asset_id': '1.3.0'}, 'extensions': [], 'fee': {'amount': 2089843, 'asset_id': '1.3.0'}, 'to': '1.2.16', 'memo': {'from': 'COCOS5X4bfMnAmeWhLoiHKUNrRu7D3LTXKBZQkZvWGj9YCTDBAYaSXU', 'to': 'COCOS6nmywkhatpmMCruqpm19wsG3gAT1NnvdxPSHaZLJvtsZwH7xCR', 'nonce': 11976393269872803420, 'message': 'cd139d20364db6f389ca86c1d750d631'}}]]}
+transaction>>>: {'signatures': ['1f4d1d80ca69281a9257f6e00ed272475de112cfdc86b5a675aa13ee2e119a8b121099a1bf3a7761f57ea0eff8175cd119376f01223b0ecce21c40008077106e05'], 'ref_block_prefix': 1486205928, 'extensions': [], 'expiration': '2019-09-20T09:19:42', 'ref_block_num': 19218, 'operations': [[0, {'from': '1.2.15', 'amount': {'amount': 10000000, 'asset_id': '1.3.0'}, 'extensions': [], 'fee': {'amount': 2089843, 'asset_id': '1.3.0'}, 'to': '1.2.16', 'memo': {'from': 'COCOS5X4bfMnAmeWhLoiHKUNrRu7D3LTXKBZQkZvWGj9YCTDBAYaSXU', 'to': 'COCOS6nmywkhatpmMCruqpm19wsG3gAT1NnvdxPSHaZLJvtsZwH7xCR', 'nonce': 11976393269872803420, 'message': 'cd139d20364db6f389ca86c1d750d631'}}]]}
+['b00062b2d59acc8ba66c97d708a62b9ebee551f01c403b7787b3800e8ab97169',
+ {'block': 84755,
+  'expiration': '2019-09-20T09:19:42',
+  'extensions': [],
+  'operation_results': [[1, {'real_running_time': 400}]],
+  'operations': [[0,
+                  {'amount': {'amount': 10000000, 'asset_id': '1.3.0'},
+                   'extensions': [],
+                   'fee': {'amount': 2089843, 'asset_id': '1.3.0'},
+                   'from': '1.2.15',
+                   'memo': {'from': 'COCOS5X4bfMnAmeWhLoiHKUNrRu7D3LTXKBZQkZvWGj9YCTDBAYaSXU',
+                            'message': 'cd139d20364db6f389ca86c1d750d631',
+                            'nonce': '11976393269872803420',
+                            'to': 'COCOS6nmywkhatpmMCruqpm19wsG3gAT1NnvdxPSHaZLJvtsZwH7xCR'},
+                   'to': '1.2.16'}]],
+  'ref_block_num': 19218,
+  'ref_block_prefix': 1486205928,
+  'signatures': ['1f4d1d80ca69281a9257f6e00ed272475de112cfdc86b5a675aa13ee2e119a8b121099a1bf3a7761f57ea0eff8175cd119376f01223b0ecce21c40008077106e05']}]
+```
+
 方法：asset_create  
+原型：
+```python
+    def asset_create(self, symbol, precision, amount, asset, _amount, _asset, common_options, bitasset_opts={}, account=None):
+```
 功能：创建token  
 参数：  
     symbol：资产符号，正则^\[\.A-Z\]+$  
@@ -420,7 +452,6 @@ pprint(gph.transfer("test2",100, "1.3.0", " ", "test1"))
     _asset：标价资产  
     common_options(dict)：代币选项  
     bitasset_opts(dict)：比特代币选项(非必填)，若使用默认参数来创建比特代币，则只需传入{}即可  
-    is_prediction_market(bool)：是否为预测市场(非比特代币无需关注此参数)  
     account：代币创建者  
 commen_options参数示例：  
 ```Python
@@ -428,22 +459,70 @@ common_options = {
     "max_supply": 10000000000000, # 最大发行量
     "market_fee_percent": 0, # 市场交易手续费百分比，默认
     "max_market_fee": 0, # 市场交易手续费最大值，默认
-    "issuer_permissions": 79, # 发行者可以更新的权限，默认
     "flags": 0, # 当前权限
     "core_exchange_rate": {"base": {}, "quote": {}}, # 与核心资产的转换率，由上述基准资产与标价资产决定
-    "whitelist_authorities": [], # 白名单账户
-    "blacklist_authorities": [], # 黑名单账户
-    "whitelist_markets": [], # 白名单资产
-    "blacklist_markets": [], # 黑名单资产
     "description": '{"main":"","short_name":"","market":""}', #内容描述
     "extension": {}
 }
 ```
 示例：
 ```python
-pprint(gph.asset_create("TESTS", 5, 1, "1.3.0", 1, "1.3.1", common_options=common_options, bitasset_opts={}, account="test1"))
-
+defaultAccount="nicotest"
+options = {
+    "max_supply":"2100000000000000",
+    "market_fee_percent":0,
+    "max_market_fee":0,
+    "issuer_permissions":79,
+    "flags":0,
+    "core_exchange_rate":{
+        "base":{
+            "amount":100000000,
+            "asset_id":"1.3.1"
+        },
+        "quote":{
+            "amount":100000,
+            "asset_id":"1.3.0"
+        }
+    },
+    "description":'{"main":"YUAN 2100","short_name":"","market":""}',
+    "extensions":[]
+}
+#base: amount asset
+#quote: _amount _asset
+pprint(gph.asset_create(symbol="YUAN", precision=5, amount=1000, asset="1.3.1", _amount=1, _asset="1.3.0", common_options=options, bitasset_opts=None, account=defaultAccount))
 ```
+示例执行结果：
+``` text
+tx.buffer>>>:  {'signatures': ['2015f7d1371d701d5ecbaef348ffed1120bc391cc0f8767492f1d4f271536dfdea0c62998134222d66b1402284f322eef4ae01087ee373ec4b3e5b68ca92266459'], 'ref_block_prefix': 1981534917, 'extensions': [], 'expiration': '2019-09-20T09:20:02', 'ref_block_num': 19227, 'operations': [[8, {'precision': 5, 'symbol': 'YUAN', 'fee': {'amount': 30000000001, 'asset_id': '1.3.0'}, 'extensions': [], 'common_options': {'market_fee_percent': 0, 'core_exchange_rate': {'quote': {'amount': 100000, 'asset_id': '1.3.0'}, 'base': {'amount': 100000000, 'asset_id': '1.3.1'}}, 'flags': 0, 'description': '{"main":"YUAN 2100","short_name":"","market":""}', 'issuer_permissions': 79, 'max_supply': 2100000000000000, 'max_market_fee': 0, 'extensions': []}, 'issuer': '1.2.15'}]]}
+transaction>>>: {'signatures': ['2015f7d1371d701d5ecbaef348ffed1120bc391cc0f8767492f1d4f271536dfdea0c62998134222d66b1402284f322eef4ae01087ee373ec4b3e5b68ca92266459'], 'ref_block_prefix': 1981534917, 'extensions': [], 'expiration': '2019-09-20T09:20:02', 'ref_block_num': 19227, 'operations': [[8, {'precision': 5, 'symbol': 'YUAN', 'fee': {'amount': 30000000001, 'asset_id': '1.3.0'}, 'extensions': [], 'common_options': {'market_fee_percent': 0, 'core_exchange_rate': {'quote': {'amount': 100000, 'asset_id': '1.3.0'}, 'base': {'amount': 100000000, 'asset_id': '1.3.1'}}, 'flags': 0, 'description': '{"main":"YUAN 2100","short_name":"","market":""}', 'issuer_permissions': 79, 'max_supply': 2100000000000000, 'max_market_fee': 0, 'extensions': []}, 'issuer': '1.2.15'}]]}
+['3db554f452a55f8ff62c1728bcb7c687fc1d691fa1835f25a6891ee4e5cecc39',
+ {'block': 84764,
+  'expiration': '2019-09-20T09:20:02',
+  'extensions': [],
+  'operation_results': [[2, {'real_running_time': 319, 'result': '1.3.5'}]],
+  'operations': [[8,
+                  {'common_options': {'core_exchange_rate': {'base': {'amount': 100000000,
+                                                                      'asset_id': '1.3.1'},
+                                                             'quote': {'amount': 100000,
+                                                                       'asset_id': '1.3.0'}},
+                                      'description': '{"main":"YUAN '
+                                                     '2100","short_name":"","market":""}',
+                                      'extensions': [],
+                                      'flags': 0,
+                                      'issuer_permissions': 79,
+                                      'market_fee_percent': 0,
+                                      'max_market_fee': 0,
+                                      'max_supply': '2100000000000000'},
+                   'extensions': [],
+                   'fee': {'amount': '30000000001', 'asset_id': '1.3.0'},
+                   'issuer': '1.2.15',
+                   'precision': 5,
+                   'symbol': 'YUAN'}]],
+  'ref_block_num': 19227,
+  'ref_block_prefix': 1981534917,
+  'signatures': ['2015f7d1371d701d5ecbaef348ffed1120bc391cc0f8767492f1d4f271536dfdea0c62998134222d66b1402284f322eef4ae01087ee373ec4b3e5b68ca92266459']}]
+```
+
 方法：asset_issue  
 功能：代币资产token发行  
 参数：  
