@@ -38,7 +38,9 @@ config["default_account"] = defaultAccount # 向钱包数据库中添加默认�
 #pprint(gph.wallet.getAccounts())
 
 #合约创建
-contract_name = "contract.debug.hello"
+#contract_name = "contract.debug.hello"
+contract_name = "contract.test1.hello"
+
 data = "function hello() \
     chainhelper:log('Hello World!') \
     chainhelper:log(date('%Y-%m-%dT%H:%M:%S', chainhelper:time())) \
@@ -47,7 +49,14 @@ pprint(gph.create_contract(contract_name, data=data, con_authority=pub, account=
 
 #合约调用: contract.debug.hello
 value_list=[]
-pprint(gph.call_contract_function(contract_name, "hello", value_list=value_list, account=defaultAccount))
+#pprint(gph.call_contract_function(contract_name, "hello", value_list=value_list, account=defaultAccount))
+
+# 修改合约内容
+revise_data = "function hello() \
+    chainhelper:log('hello revise contract test. 2019-08-20 11:13:15') \
+    chainhelper:log(date('%Y-%m-%dT%H:%M:%S', chainhelper:time())) \
+end "
+#pprint(gph.revise_contract(contract_name, data=revise_data, account=defaultAccount))
 
 
 #test result data:
@@ -111,4 +120,30 @@ transaction>>>: {'signatures': ['1f1dd6e131e3078857fed44fb6ae55e4d309fb5f9ef775a
   'ref_block_prefix': 2891025332,
   'signatures': ['1f1dd6e131e3078857fed44fb6ae55e4d309fb5f9ef775a7c323d7ead60b58ca06218ae0b9d7feacb704a864c824c1997cdf8e42bf20a12776701402f53cf08884']}]
 '''
+
+#3. 修改合约内容
+‘’‘
+tx.buffer>>>: {'ref_block_num': 11181, 'ref_block_prefix': 1022871651, 'extensions': [], 'signatures': ['1f33824255bc213b2b3a1ced2c1dd970ffc11345f95250870179d40154a4432dc11b16a373a8527cb0cf617de49669d52d25ef5fa4a4b6826908132aa674201e4d'], 'operations': [[59, {'reviser': '1.2.15', 'fee': {'amount': 2157226, 'asset_id': '1.3.0'}, 'extensions': [], 'data': "function hello()     chainhelper:log('hello revise contract test. 2019-08-20 11:13:15')     chainhelper:log(date('%Y-%m-%dT%H:%M:%S', chainhelper:time())) end ", 'contract_id': '1.16.2'}]], 'expiration': '2019-09-20T04:15:42'}
+tx======>>: {'ref_block_num': 11181, 'ref_block_prefix': 1022871651, 'extensions': [], 'signatures': ['1f33824255bc213b2b3a1ced2c1dd970ffc11345f95250870179d40154a4432dc11b16a373a8527cb0cf617de49669d52d25ef5fa4a4b6826908132aa674201e4d'], 'operations': [[59, {'reviser': '1.2.15', 'fee': {'amount': 2157226, 'asset_id': '1.3.0'}, 'extensions': [], 'data': "function hello()     chainhelper:log('hello revise contract test. 2019-08-20 11:13:15')     chainhelper:log(date('%Y-%m-%dT%H:%M:%S', chainhelper:time())) end ", 'contract_id': '1.16.2'}]], 'expiration': '2019-09-20T04:15:42'}
+transaction>>>: {'ref_block_num': 11181, 'ref_block_prefix': 1022871651, 'extensions': [], 'signatures': ['1f33824255bc213b2b3a1ced2c1dd970ffc11345f95250870179d40154a4432dc11b16a373a8527cb0cf617de49669d52d25ef5fa4a4b6826908132aa674201e4d'], 'operations': [[59, {'reviser': '1.2.15', 'fee': {'amount': 2157226, 'asset_id': '1.3.0'}, 'extensions': [], 'data': "function hello()     chainhelper:log('hello revise contract test. 2019-08-20 11:13:15')     chainhelper:log(date('%Y-%m-%dT%H:%M:%S', chainhelper:time())) end ", 'contract_id': '1.16.2'}]], 'expiration': '2019-09-20T04:15:42'}
+['9e46323a09989f4b302ad717f7ec1d31237c7b94468cb7a8098f5b508b813894',
+ {'block': 76718,
+  'expiration': '2019-09-20T04:15:42',
+  'extensions': [],
+  'operation_results': [[5,
+                         {'message': 'e11db591ee109c7e46de186ab93335792c2b6c8cbf69a03a10a3670e603183b0',
+                          'real_running_time': 1017}]],
+  'operations': [[59,
+                  {'contract_id': '1.16.2',
+                   'data': "function hello()     chainhelper:log('hello revise "
+                           "contract test. 2019-08-20 11:13:15')     "
+                           "chainhelper:log(date('%Y-%m-%dT%H:%M:%S', "
+                           'chainhelper:time())) end ',
+                   'extensions': [],
+                   'fee': {'amount': 2157226, 'asset_id': '1.3.0'},
+                   'reviser': '1.2.15'}]],
+  'ref_block_num': 11181,
+  'ref_block_prefix': 1022871651,
+  'signatures': ['1f33824255bc213b2b3a1ced2c1dd970ffc11345f95250870179d40154a4432dc11b16a373a8527cb0cf617de49669d52d25ef5fa4a4b6826908132aa674201e4d']}]
+’‘’
 

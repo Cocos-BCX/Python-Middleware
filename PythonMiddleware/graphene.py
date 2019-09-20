@@ -1297,25 +1297,25 @@ class Graphene(object):
         })
         return self.finalizeOp(op, account["name"], "active")
 
-    def account_whitelist(self, account_to_list, account_listing="no_listing", account=None):
-        if account_listing == "white_listed":
-            account_listing = 0x1
-        elif account_listing == "black_listed":
-            account_listing = 0x2
-        elif account_listing == "white_and_black_listed":
-            account_listing = (0x1 | 0x2)
-        else:
-            account_listing = 0x0
-        _account = Account(account_to_list, full=False, graphene_instance=self)
-        account = Account(account, full=False, graphene_instance=self)
-        op = operations.Account_whitelist(**{
-            "fee": {"amount": 0, "asset_id": "1.3.0"},
-            "authorizing_account": account["id"],
-            "account_to_list": _account["id"],
-            "new_listing": account_listing,
-            "extensions": {}
-        })
-        return self.finalizeOp(op, account["name"], "active")
+    # def account_whitelist(self, account_to_list, account_listing="no_listing", account=None):
+    #     if account_listing == "white_listed":
+    #         account_listing = 0x1
+    #     elif account_listing == "black_listed":
+    #         account_listing = 0x2
+    #     elif account_listing == "white_and_black_listed":
+    #         account_listing = (0x1 | 0x2)
+    #     else:
+    #         account_listing = 0x0
+    #     _account = Account(account_to_list, full=False, graphene_instance=self)
+    #     account = Account(account, full=False, graphene_instance=self)
+    #     op = operations.Account_whitelist(**{
+    #         "fee": {"amount": 0, "asset_id": "1.3.0"},
+    #         "authorizing_account": account["id"],
+    #         "account_to_list": _account["id"],
+    #         "new_listing": account_listing,
+    #         "extensions": {}
+    #     })
+    #     return self.finalizeOp(op, account["name"], "active")
 
     def withdraw_permission_create(self, authorized_account, amount, asset, period_start_time, withdrawal_period_sec=0, periods_until_expiration=0, account=None):
         if not authorized_account:
