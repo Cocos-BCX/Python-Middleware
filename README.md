@@ -64,7 +64,7 @@ API User Guide
 
 ### Wallet
 
-* [Create a wallet with Graphene](#Create-a-wallet-with-Graphene)
+* [Create a wallet by Graphene](#Create-a-wallet-by-Graphene)
 * [Create a wallet 1](#Create-a-wallet-1)
 * [Create a wallet 2](#Create-a-wallet-2)
 * [Unlock the wallet](#Unlock-the-wallet)
