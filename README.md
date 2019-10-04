@@ -2,8 +2,8 @@
 
 Python Middleware For Cocos—BCX
 ==============
-* [Get Started](#Get Started)
-* [API User Guide](#API User Guide)
+* [Get Started](#Get-Started)
+* [API User Guide](#API-User-Guide)
 * [Main-Packages](#Main-Packages)
 
 Get Started
@@ -54,7 +54,7 @@ API User Guide
 * [Wallet](#Wallet)
 * [Account](#Account)  
 * [Asset](#Asset)  
-* [NH Asset](#NH Asset)  
+* [NH Asset](#NH-Asset)  
 * [Contract](#Contract)  
 * [Market](#Market)  
 * [Withness](#Withness)  
@@ -64,25 +64,25 @@ API User Guide
 
 ### Wallet
 
-* [Create a wallet with Graphene](Create a wallet with Graphene)
-* [Create a wallet 1](Create a wallet 1)
-* [Create a wallet 2](Create a wallet 2)
-* [Unlock the wallet](Unlock the wallet)
-* [Lock the wallet](Lock the wallet)
-* [Modify wallet unlock password](Modify wallet unlock password)
-* [Add private key to the wallet](Add private key to the wallet)
-* [Get the private key of the wallet](Get the private key of the wallet)
-* [Remove the private key in the wallet](Remove the private key in the wallet)
-* [Encrypt wallet private key](Encrypt wallet private key)
-* [Decrypt wallet private key](Decrypt wallet private key)
-* [Get owner/active/memo private key](Get owner/active/memo private key)
-* [Get account ID through private key](Get account ID through private key)
-* [Get account ID through public key](Get account ID through public key)
-* [Get account info](Get account info)
-* [Get public key type](Get public key type)
-* [Get all the accounts in the wallet](Get all the accounts in the wallet)
-* [Get all the public keys in the wallet](Get all the public keys in the wallet)
-* [Wipe the private key in the wallet](Wipe the private key in the wallet)
+* [Create a wallet by Graphene](#Create-a-wallet-by-Graphene)
+* [Create a wallet 1](#Create-a-wallet-1)
+* [Create a wallet 2](#Create-a-wallet-2)
+* [Unlock the wallet](#Unlock-the-wallet)
+* [Lock the wallet](#Lock-the-wallet)
+* [Modify wallet unlock password](#Modify-wallet-unlock-password)
+* [Add private key to the wallet](#Add-private-key-to-the-wallet)
+* [Get the private key of the wallet](#Get-the-private-key-of-the-wallet)
+* [Remove the private key in the wallet](#Remove-the-private-key-in-the-wallet)
+* [Encrypt wallet private key](#Encrypt-wallet-private-key)
+* [Decrypt wallet private key](#Decrypt-wallet-private-key)
+* [Get owner/active/memo private key](#Get-owner--active--memo-private-key)
+* [Get account ID through private key](#Get-account-ID-through-private-key)
+* [Get account ID through public key](#Get-account-ID-throug-public-key)
+* [Get account info](#Get-account-info)
+* [Get public key type](#Get-public-key-type)
+* [Get all the accounts in the wallet](#Get-all-the-accounts-in-the-wallet)
+* [Get all the public keys in the wallet](#Get-all-the-public-keys-in-the-wallet)
+* [Wipe the private key in the wallet](#Wipe-the-private-key-in-the-wallet)
 
 #### Create a wallet by Graphene
     Method: newWallet(pwd)
