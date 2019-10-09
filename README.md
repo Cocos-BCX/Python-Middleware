@@ -85,135 +85,138 @@ API User Guide
 * [Wipe the private key in the wallet](#Wipe-the-private-key-in-the-wallet)
 
 #### Create a wallet by Graphene
-    Method: newWallet(pwd)
+	Method: newWallet(pwd)
 	Function: Create a wallet
 	Parameters: pwd: str type, wallet lock and unlock password
 	Return value
-    	> Succeed: None
+	    > Succeed: None
 	    > Fail: Corresponding error message
 	Description:
-    	> This interface is the wallet.newWallet interface encapsulation, but not a wallet api
+	    > This interface is the wallet.newWallet interface encapsulation, but not a wallet api
 	    > Essentially it is to call wallet to create a wallet.
-    	> After the wallet is created, you can use the wallet instance directly through Graphene::instance.wallet to operate the interface of the wallet.
+	    > After the wallet is created, you can use the wallet instance directly through Graphene::instance.wallet to operate the interface of the wallet.
+
 
 #### Create a wallet 1
-    Method: newWallet(pwd)
-    Function: Create a wallet
-    Parameters: pwd: str type, wallet lock and unlock password
-    Return value
-        > Succeed: None
-        > Fail: Corresponding error message
+	Method: newWallet(pwd)
+	Function: Create a wallet
+	Parameters: pwd: str type, wallet lock and unlock password
+	Return value
+	    > Succeed: None
+	    > Fail: Corresponding error message
 
 #### Create a wallet 2
-    Method: create(pwd)
-    Function: Create a wallet, Alias for newWallet()
-    Parameters:
-        > pwd: str type, wallet lock and unlock password
-    Return value:
-        > Succeed: None
-        > Fail: Corresponding error message
+	Method: create(pwd)
+	Function: Create a wallet, Alias for newWallet()
+	Parameters:
+	    > pwd: str type, wallet lock and unlock password
+	Return value:
+	    > Succeed: None
+	    > Fail: Corresponding error message
 
 #### Unlock the wallet
-    Method: unlock(pwd=None)
-    Function: Unlock the wallet 
-    Parameters: pwd: str type, wallet lock and unlock password
-    Return value:
-        > Succeed: None
-        > Fail: Corresponding error message
+	Method: unlock(pwd=None)
+	Function: Unlock the wallet 
+	Parameters: pwd: str type, wallet lock and unlock password
+	Return value:
+	    > Succeed: None
+	    > Fail: Corresponding error message
 
 #### Lock the wallet
-    Method: lock()
-    Function: Lock the wallet
-    Parameters: None
-    Return value
-        > Succeed: None
-        > Fail: Corresponding error message
-
+	Method: lock()
+	Function: Lock the wallet
+	Parameters: None
+	Return value
+	    > Succeed: None
+	    > Fail: Corresponding error message
 
 #### Modify wallet unlock password
 	Method: changePassphrase(new_pwd)
-    Function: Modify wallet unlock password
-    Parameters: pwd: str type, the new password of the wallet
-    Return value:
-        > Succeed: None
-        > Fail: Corresponding error message
-
+	Function: Modify wallet unlock password
+	Parameters: pwd: str type, the new password of the wallet
+	Return value:
+	    > Succeed: None
+	    > Fail: Corresponding error message
 
 #### Add private key to the wallet
-    Method: addPrivateKey(wif)
-    Function: Add private key to the wallet
-    Parameters: wif: str type, private key
-#### Get the private key of the wallet
-    Method: getPrivateKeyForPublicKey(pub)
-    Function: Get the private key corresponding to the public key in the wallet
-    Parameters: wif: str type, public key
-#### Remove the private key in the wallet 
-    Method: removePrivateKeyFromPublicKey(pub)
-    Function: Remove the private key corresponding to the public key in the wallet
-    Parameters: wif: str type, public key
+	Method: addPrivateKey(wif)
+	Function: Add private key to the wallet
+	Parameters: wif: str type, private key
 
+####  Get the private key of the wallet
+	Method: getPrivateKeyForPublicKey(pub)
+	Function: Get the private key corresponding to the public key in the wallet
+	Parameters: wif: str type, public key
+
+#### Remove the private key in the wallet 
+	Method: removePrivateKeyFromPublicKey(pub)
+	Function: Remove the private key corresponding to the public key in the wallet
+	Parameters: wif: str type, public key
 
 #### Encrypt wallet private key
-    Method: encrypt_wif(wif)
-    Function: Encrypt the private key
-    Parameters: wif: str type, private key
-    Return value: encrypted private key, str type
-    
+	Method: encrypt_wif(wif)
+	Function: Encrypt the private key
+	Parameters: wif: str type, private key
+	Return value: encrypted private key, str type
+
 #### Decrypt wallet private key
-    Method: decrypt_wif(encwif)
-    Function: Decrypt the encrypted private key
-    Parameters: encwif: str type, encrypted private key
-    Return value: private key, str type
-    
+	Method: decrypt_wif(encwif)
+	Function: Decrypt the encrypted private key
+	Parameters: encwif: str type, encrypted private key
+	Return value: private key, str type
+
 #### Get owner/active/memo private key
-    Method:
-        > getOwnerKeyForAccount(name)
-        > getActiveKeyForAccount(name)
-        > getMemoKeyForAccount(name)
-    Function: Get the owner/active/memo private key by account name
-    Parameters: name: str type, account name
-    Return value: private key, str type
-    
+	Method:
+	    > getOwnerKeyForAccount(name)
+	    > getActiveKeyForAccount(name)
+	    > getMemoKeyForAccount(name)
+	Function: Get the owner/active/memo private key by account name
+	Parameters: name: str type, account name
+	Return value: private key, str type
+
 #### Get account ID through private key
-    Method: getAccountFromPrivateKey(wif)
-    Function: Get the account ID by private key
-    Parameters: wif: str type, private key
-    Return value: private key, str type
-    
+	Method: getAccountFromPrivateKey(wif)
+	Function: Get the account ID by private key
+	Parameters: wif: str type, private key
+	Return value: private key, str type
+
 #### Get account ID through public key
-    Method: getAccountFromPublicKey(pub)
-    Function: Get the account ID by public key
-    Parameters: pub: str type, public key
-    Return value: public key, str type
+	Method: getAccountFromPublicKey(pub)
+	Function: Get the account ID by public key
+	Parameters: pub: str type, public key
+	Return value: public key, str type
 
 #### Get account info
-    Method: getAccount(pub)
-    Function: Get the account info by public key
-    Parameters: pub: str type, public key
+	Method: getAccount(pub)
+	Function: Get the account info by public key
+	Parameters: pub: str type, public key
+
 #### Get public key type
-    Method: getKeyType(account, pub)
-    Function: Get the public key type
-    Parameters:
-        > account: Account type, account
-        > pub: str type, public key
-    Return value: str type
+	Method: getKeyType(account, pub)
+	Function: Get the public key type
+	Parameters:
+	    > account: Account type, account
+	    > pub: str type, public key
+	Return value: str type
+
 #### Get all the accounts in the wallet
-    Method: getAccounts()
-    Function: Get all the accounts info in the wallet
-    Parameters: None
-    Return value: Account array
+	Method: getAccounts()
+	Function: Get all the accounts info in the wallet
+	Parameters: None
+	Return value: Account array
+
 #### Get all the public keys in the wallet
-    Method: getPublicKeys()
-    Function: Get all the public keys in the wallet
-    Parameters: None
-    Return value: str array
+	Method: getPublicKeys()
+	Function: Get all the public keys in the wallet
+	Parameters: None
+	Return value: str array
+
 #### Wipe the private key in the wallet
-    Method: wipe()
-    Function: Wipe all private keys imported into the wallet
-    Parameters: None
+	Method: wipe()
+	Function: Wipe all private keys imported into the wallet
+	Parameters: None
 
-
-Example:
+Example:  
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
@@ -229,7 +232,7 @@ gph = Graphene(node=nodeAddress, blocking=True)
 set_shared_graphene_instance(gph) 
 
 #Create wallet 1
-# You can use the wallet instance directly through gph.wallet to operate the interface of the wallet.
+#You can use the wallet instance directly through gph.wallet to operate the interface of the wallet.
 if gph.wallet.created() is False: 
     gph.newWallet("123456")
 
@@ -302,15 +305,21 @@ pprint(gph.wallet.getKeyType(Account('test1'), pub))
 #gph.wallet.wipe()
 ```
 
+
 ### Account
+
 ----------
 
-    Method: create_account
-    Function: Create an account and import the private key into the wallet
-    Parameters:
-        account_name: Account name registration rules, /^[a-z][a-z0-9.-]{4,63}$/, begin with lowercase letters + digits or lowercase letters or dots or dashes -, with a length of 4 to 63 characters
-        password: account password
-	Note: Only a lifetime account can create an account
+
+Method: create_account  
+Function: Create an account and import the private key into the wallet  
+Parameters:  
+   account_name: Account name registration rules, /^[a-z][a-z0-9.-]{4,63}$/, begin with lowercase letters + digits or lowercase letters or dots or dashes -, with a length of 4 to 63 characters  
+    password: account password  
+Note: Only a lifetime account can create an account  
+* 只有终身账户才可以创建账户  
+* 账号有owner key，active key，memo key，新创建账号的owner key 和active key不同，active key和memo key相同。在调用返回结果的operations里可以查看到对应key的公钥。
+* 创建好的账号秘钥保存在钱包里面，请及时使用**getPrivateKeyForPublicKey**获取账号秘钥进行备份，避免秘钥丢失。
 
 Example:  
 ```python
@@ -372,35 +381,35 @@ transaction>>>: {'expiration': '2019-08-16T07:16:38', 'signatures': ['1f5823d16f
   'signatures': ['1f5823d16f972a4407544a2388a014a3070caa0b073dc8a7310a26f09534db300d7892b0df9720fe478808b5f5ac317921ad1bc87f1f29317f4767e5b6336f2726']}]
 ```
 
-### Method：upgrade_account
-
-----------
-
-    Function: You can create a sub-account by upgrading your account to a lifetime account, which requires a certain fee.
-    Parameters：  
-        account：account to be upgraded
-    Example:
-    ```python
-    pprint(gph.upgrade_account("test1"))
-    ```
+Method: upgrade_account  
+Function: You can create a sub-account by upgrading your account to a lifetime account, which requires a certain fee.  
+Parameters:  
+	    account: account to be upgraded  
+Example:
+```python
+pprint(gph.upgrade_account("test1"))
+```
 
 
 ### Asset
 
+
 ----------
 
-Method: transfer
-Prototype：
+
+Method: transfer  
+Prototype:
 ```python
     def transfer(self, to, amount, asset, memo="", account=None):
 ```
-    Function: Send tokens to the recipient
-    Parameters：
-        to：Recipient account name
-        amount(int)：Amount of tokens sent
-        asset：Asset ID or token symbol
-        memo：Transfer memo
-        account：Sender account name
+Function: Send tokens to the recipient  
+Parameters:  
+	to: Recipient account name  
+	amount(int): Amount of tokens sent  
+	asset: Asset ID or token symbol  
+	memo: Transfer memo  
+	account: Sender account name  
+  
 Example:
 ```python
 pprint(gph.transfer("test1", 100, "COCOS", defaultAccount))
@@ -429,24 +438,24 @@ transaction>>>: {'signatures': ['1f4d1d80ca69281a9257f6e00ed272475de112cfdc86b5a
   'signatures': ['1f4d1d80ca69281a9257f6e00ed272475de112cfdc86b5a675aa13ee2e119a8b121099a1bf3a7761f57ea0eff8175cd119376f01223b0ecce21c40008077106e05']}]
 ```
 
-Method: asset_create
+Method: asset_create  
 Prototype:
 ```python
     def asset_create(self, symbol, precision, amount, asset, _amount, _asset, common_options, bitasset_opts={}, account=None):
 ```
-    Function: Create token
-    Parameters:
-    symbol: Asset symbol, regular ^[.A-Z]+$
-    precision(int): precise to decimal digit
-    amount(int): The amount of base assets (i.e. the created token, default 1)
-    asset: Base asset ID
-    _amount(int): quote asset (i.e. core asset, default 1)
-    _asset: quote asset
-    common_options(dict): Token option
-    bitasset_opts(dict): Bit token option (not required), if the default parameters is used to create bit tokens, just pass {}
-    account: Token creator
-    commen_options parameters example:
+Function: Create token  
+Parameters:  
+	symbol: Asset symbol, regular ^[.A-Z]+$  
+	precision(int): precise to decimal digit  
+	amount(int): The amount of base assets (i.e. the created token, default 1)  
+	asset: Base asset ID  
+	_amount(int): quote asset (i.e. core asset, default 1)  
+	_asset: quote asset  
+	common_options(dict): Token option  
+	bitasset_opts(dict): Bit token option (not required), if the default parameters is used to create bit tokens, just pass {}  
+	account: Token creator  
 
+commen_options parameters example:  
 ```Python
 common_options = {
     "max_supply": 10000000000000, # Maximum supply
@@ -457,6 +466,7 @@ common_options = {
     "description": '{"main":"","short_name":"","market":""}', #Content description
 "extension": {}
 }
+
 ```
 Example:
 ```python
@@ -516,16 +526,16 @@ transaction>>>: {'signatures': ['2015f7d1371d701d5ecbaef348ffed1120bc391cc0f8767
   'signatures': ['2015f7d1371d701d5ecbaef348ffed1120bc391cc0f8767492f1d4f271536dfdea0c62998134222d66b1402284f322eef4ae01087ee373ec4b3e5b68ca92266459']}]
 ```
 
-    Method: asset_issue
-    Function: Issue token
-    Parameters:
-        amount(int): Issuance amount
-        asset: Token to be issued
-        issue_to_account: target account
-        memo: Additional message (not required)
-        account: Token creator
-    Example:
-
+Method: asset_issue  
+Function: Issue token  
+Parameters:  
+	amount(int): Issuance amount  
+	asset: Token to be issued  
+	issue_to_account: target account  
+	memo: Additional message (not required)  
+	account: Token creator  
+  
+Example:
 ```python
 pprint(gph.asset_issue(10000, "TESTS", "test1", account="test1"))
 
@@ -533,13 +543,19 @@ pprint(gph.asset_issue(10000, "TESTS", "test1", account="test1"))
 
 ### NH Asset
 
+
 ----------
 **Method: register_nh_asset_creator**  
-    Function: Register current account as a developer
-    Parameters:
-	    account: Registrar account name
-    Example:
 
+Prototype:
+```python
+    def register_nh_asset_creator(self, account=None):  
+```
+Function: Register current account as a developer  
+Parameters:  
+> account: Registrar account name  
+
+Example:
 ```python
 account="nicotest"
 pprint(gph.register_nh_asset_creator(account))
@@ -547,83 +563,158 @@ pprint(gph.register_nh_asset_creator(account))
 
 **Method: create_world_view**  
 
+Prototype:
 ```python
     def create_world_view(self, world_view, account=None):  
 ```
-    Function: Create a supported NH asset worldview and register the NH asset worldview supported by current account (generally the game account) with the blockchain system
-    Parameters:
+Function: Create a supported NH asset worldview and register the NH asset worldview supported by current account (generally the game account) with the blockchain system  
+Parameters:  
+> world_view: Worldview name  
+> account: Creator account name  
 
-> world_view：Worldview name
-> account：Creator account name
-
-Example：
+Example:
 ```python
 account="nicotest"
 #2019-09-19T02:45:06 register_nh_asset_creator_operation nicotest fee: 1 COCOS   result: 4.0.1 
 pprint(gph.create_world_view("snacktest", account))
 ```
 
-**Method：create_nh_asset**  
+**Method: create_nh_asset**  
 
+Prototype:
 ```python
     def create_nh_asset(self, owner, assetID, world_view, describe, account=None):
 ```
-    Function: Create a unique NH asset
-    Parameters:
-        > owner：Specify the NH asset owner (NH asset ownership account, which is defaulted as NH asset creator)
-        > assetID：The native token used for the transaction of current NH asset
-        > world_view：Worldview
-        > describe：Description of the current content of the NH asset, as defined by the creator
-        > account：creator
+Function: Create a unique NH asset  
 
-Example：
+Parameters:  
+> ownerr: Specify the NH asset owner (NH asset ownership account, which is defaulted as NH asset creator)  
+> assetID: The native token used for the transaction of current NH asset  
+> world_view: Worldview  
+> describe: Description of the current content of the NH asset, as defined by the creator  
+> account: creator  
+
+Example:
 ```python
 account="nicotest"
 #2019-09-19T02:45:26 create_world_view_operation nicotest fee: 1 COCOS   result: 4.1.1 
 pprint(gph.create_nh_asset(account, "COCOS", "snacktest", '{"name":"test1"}', account))
 ```
 
-**Method：create_nh_asset_order**  
+**Method: delete_nh_asset**  
 
+Prototype:
+```python
+    def delete_nh_asset(self, asset_id, account=None):  
+```
+Function: 删除非同质资产  
+Parameters:
+> asset_id: 非同质资产ID  
+> account: 操作付费账户  
+
+Example:
+```python
+account="nicotest"
+pprint(gph.delete_nh_asset("4.2.4", account))
+```
+
+**Method: transfer_nh_asset**  
+
+Prototype:
+```python
+    def transfer_nh_asset(self, to, nh_asset_id, account=None):  
+```
+Function: 转移非同质资产 将自己拥有的非同质资产转移给另外一个账户  
+Parameters:
+> to：to account，非同质资产的接收账户  
+> nh_asset_id: 非同质资产ID  
+> account: from account，非同质资产转出账户  
+
+Example:
+```python
+account="nicotest"
+#2019-09-19T06:08:46 create_nh_asset_operation nicotest fee: 1 COCOS   result: 4.2.5
+pprint(gph.transfer_nh_asset("test1", "4.2.5", account))
+```
+
+**Method: create_nh_asset_order**  
+
+Prototype:
 ```python
     def create_nh_asset_order(self, otcaccount, pending_order_fee_amount, pending_order_fee_asset, nh_asset, memo, price_amount, price, account=None):  
 ```
-Function: Sell the NH asset
-Parameters:
-    > otcaccount：Account on OTC transaction platform for charging pending orders
-    > pending_order_fee_amount：Amount of fees for pending orders. Pending order fees paid by users to OTC platform accounts
-    > pending_order_fee_asset：The native token or ID of the asset used to pay for the pending order. The pending order fee paid by the user to the OTC platform account
-    > nh_asset：NH Asset ID
-    > memo：Pending order memo
-    > price_amount：Price amount of pending order
-    > price：The native token or ID used for the pending order price
-    > account：Seller
+Function: Sell the NH asset  
+Parameters:  
+> otcaccount: Account on OTC transaction platform for charging pending orders  
+> pending_order_fee_amount: Amount of fees for pending orders. Pending order fees paid by users to OTC platform accounts  
+> pending_order_fee_asset: The native token or ID of the asset used to pay for the pending order. The pending order fee paid by the user to the OTC platform account  
+> nh_asset: NH Asset ID  
+> memo: Pending order memo  
+> price_amount: Price amount of pending order  
+> price: The native token or ID used for the pending order price  
+> account: Seller  
 
-Example：
+Example:
 ```python
 account="nicotest"
 #2019-09-19T05:27:40 create_nh_asset_operation nicotest fee: 1 COCOS   result: 4.2.4 
 pprint(gph.create_nh_asset_order("test1", 1, "1.3.0", "4.2.4", " sell nh asset order test ", 100, "1.3.0", account))
 ```
 
+**Method: cancel_nh_asset_order**  
+
+Prototype:
+```python
+    def cancel_nh_asset_order(self, order, account=None):  
+```
+Function: 取消NH资产订单  
+Parameters:
+> order: 非同质资产订单ID  
+> account: 操作付费账户  
+
+Example:
+```python
+account="nicotest"
+#2019-09-19T05:29:16 create_nh_asset_order_operation nicotest fee: 1 COCOS   result: 4.3.1 
+pprint(gph.cancel_nh_asset_order("4.3.1", account))
+```
+
+**Method: fill_nh_asset_order**  
+
+Prototype:
+```python
+    def fill_nh_asset_order(self, order, account=None):
+```
+Function: 购买非同质资产  
+Parameters:
+> order: 非同质资产出售单 ID  
+> account: 购买者  
+
+Example:
+```python
+account="nicotest"
+#2019-09-19T06:20:38 create_nh_asset_order_operation nicotest fee: 1 COCOS   result: 4.3.2 
+pprint(gph.fill_nh_asset_order("4.3.2", account))
+```
+
+
 ### Contract
 
 
 ----------
-**Method：create_contract**  
-
+**Method: create_contract**  
+Prototype:
 ```python
     def create_contract(self, name, data, con_authority, account=None):
 ```  
-    Method: create_contract
-    Function: Create a smart contract
-	Parameters：  
-        > name： Contract name, regular /^[a-z][a-z0-9.-]{4,63}$/, begin with a letter + letters or numbers or dot or dash -, length 4 to 63
-        > data：Contract lua code
-        > con_authority：Contract authority (publicKey in a pair of public and private keys)
-        > account：Contract creator
+Function: Create a smart contract  
+Parameters:  
+> name: Contract name, regular /^[a-z][a-z0-9.-]{4,63}$/, begin with a letter + letters or numbers or dot or dash -, length 4 to 63  
+> data：Contract lua code  
+> con_authority：Contract authority (publicKey in a pair of public and private keys)  
+> account：Contract creator  
 
-Example：
+Example:
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
@@ -694,29 +785,36 @@ transaction>>>: {'ref_block_num': 2565, 'ref_block_prefix': 3142243287, 'extensi
   'signatures': ['2075b4799df8add77b27383290af79cf4107c681ee50bfdeb58aee14cd87cc5b431603813a402e326b9c432cc2c5f1cbdad3f32ea29cb63010e8f90615082337ed']}]
 ```
 
-**方法：call_contract_function**  
+**Method: call_contract_function**  
 
+Prototype:  
 ```python
     def call_contract_function(self, contract, function, value_list, account=None):
 ```
-    Method: call_contract_function
-    Function: Call contract function interface
-    Parameters:
-        > contract：Contract name or contract ID
-        > function：Function name in the contract
-        > value_list(list)： Call the parameter list of the contract function
-        > account：Caller account name
+Function: Call contract function interface  
+Parameters:  
+> contract：Contract name or contract ID  
+> function：Function name in the contract  
+> value_list(list)： Call the parameter list of the contract function  
+> account：Caller account name  
 
-value_list parameters 
+value_list parameters ：  
 ```Python
 value_list = [
         [2, {"baseValue": "test1"}], 
         [2, {"baseValue": "100")}]
     ]
 ```
-Example：
+Example:
 ```python
-pprint(gph.call_contract_function("1.16.1", "draw", value_list=value_list, account="test1"))
+# gph初始化部分 参考合约创建示例
+
+defaultAccount="nicotest"
+contract_name = "contract.debug.hello"
+
+#合约调用: contract.debug.hello
+value_list=[]
+pprint(gph.call_contract_function(contract_name, "hello", value_list=value_list, account=defaultAccount))
 ```
 
 result：
@@ -755,154 +853,216 @@ transaction>>>: {'signatures': ['1f1dd6e131e3078857fed44fb6ae55e4d309fb5f9ef775a
   'signatures': ['1f1dd6e131e3078857fed44fb6ae55e4d309fb5f9ef775a7c323d7ead60b58ca06218ae0b9d7feacb704a864c824c1997cdf8e42bf20a12776701402f53cf08884']}]
 ```
 
+**Method: revise_contract**
+
+Prototype:
+```python
+    def revise_contract(self, contract, data, account=None):
+```
+Function: 重置合约内容
+Parameters:
+> contract：需要重置的合约的名称或 ID   
+> data：合约新内容  
+> account：合约拥有者  
+
+Example: 
+```python
+defaultAccount="nicotest"
+contract_name = "contract.debug.hello"
+
+revise_data = "function hello() \
+    chainhelper:log('hello revise contract test. 2019-08-20 11:13:15') \
+    chainhelper:log(date('%Y-%m-%dT%H:%M:%S', chainhelper:time())) \
+end "
+pprint(gph.revise_contract(contract_name, data=revise_data, account=defaultAccount))
+```
+result：
+``` text
+tx.buffer>>>: {'ref_block_num': 11181, 'ref_block_prefix': 1022871651, 'extensions': [], 'signatures': ['1f33824255bc213b2b3a1ced2c1dd970ffc11345f95250870179d40154a4432dc11b16a373a8527cb0cf617de49669d52d25ef5fa4a4b6826908132aa674201e4d'], 'operations': [[59, {'reviser': '1.2.15', 'fee': {'amount': 2157226, 'asset_id': '1.3.0'}, 'extensions': [], 'data': "function hello()     chainhelper:log('hello revise contract test. 2019-08-20 11:13:15')     chainhelper:log(date('%Y-%m-%dT%H:%M:%S', chainhelper:time())) end ", 'contract_id': '1.16.2'}]], 'expiration': '2019-09-20T04:15:42'}
+tx======>>: {'ref_block_num': 11181, 'ref_block_prefix': 1022871651, 'extensions': [], 'signatures': ['1f33824255bc213b2b3a1ced2c1dd970ffc11345f95250870179d40154a4432dc11b16a373a8527cb0cf617de49669d52d25ef5fa4a4b6826908132aa674201e4d'], 'operations': [[59, {'reviser': '1.2.15', 'fee': {'amount': 2157226, 'asset_id': '1.3.0'}, 'extensions': [], 'data': "function hello()     chainhelper:log('hello revise contract test. 2019-08-20 11:13:15')     chainhelper:log(date('%Y-%m-%dT%H:%M:%S', chainhelper:time())) end ", 'contract_id': '1.16.2'}]], 'expiration': '2019-09-20T04:15:42'}
+transaction>>>: {'ref_block_num': 11181, 'ref_block_prefix': 1022871651, 'extensions': [], 'signatures': ['1f33824255bc213b2b3a1ced2c1dd970ffc11345f95250870179d40154a4432dc11b16a373a8527cb0cf617de49669d52d25ef5fa4a4b6826908132aa674201e4d'], 'operations': [[59, {'reviser': '1.2.15', 'fee': {'amount': 2157226, 'asset_id': '1.3.0'}, 'extensions': [], 'data': "function hello()     chainhelper:log('hello revise contract test. 2019-08-20 11:13:15')     chainhelper:log(date('%Y-%m-%dT%H:%M:%S', chainhelper:time())) end ", 'contract_id': '1.16.2'}]], 'expiration': '2019-09-20T04:15:42'}
+['9e46323a09989f4b302ad717f7ec1d31237c7b94468cb7a8098f5b508b813894',
+ {'block': 76718,
+  'expiration': '2019-09-20T04:15:42',
+  'extensions': [],
+  'operation_results': [[5,
+                         {'message': 'e11db591ee109c7e46de186ab93335792c2b6c8cbf69a03a10a3670e603183b0',
+                          'real_running_time': 1017}]],
+  'operations': [[59,
+                  {'contract_id': '1.16.2',
+                   'data': "function hello()     chainhelper:log('hello revise "
+                           "contract test. 2019-08-20 11:13:15')     "
+                           "chainhelper:log(date('%Y-%m-%dT%H:%M:%S', "
+                           'chainhelper:time())) end ',
+                   'extensions': [],
+                   'fee': {'amount': 2157226, 'asset_id': '1.3.0'},
+                   'reviser': '1.2.15'}]],
+  'ref_block_num': 11181,
+  'ref_block_prefix': 1022871651,
+  'signatures': ['1f33824255bc213b2b3a1ced2c1dd970ffc11345f95250870179d40154a4432dc11b16a373a8527cb0cf617de49669d52d25ef5fa4a4b6826908132aa674201e4d']}]
+```
+
+账号操作记录：
+``` text
+unlocked >>> get_account_history nicotest 3
+get_account_history nicotest 3
+2019-09-20T03:15:44 revise_contract_operation nicotest fee: 21.57226 COCOS   result: e11db591ee109c7e46de186ab93335792c2b6c8cbf69a03a10a3670e603183b0 
+2019-09-20T03:14:58 revise_contract_operation nicotest fee: 21.22070 COCOS   result: d855198c6fc51bc6584d7ff16107a9725ede7b11862860a8c4e98feb37963abd 
+2019-09-20T03:08:54 contract_create_operation nicotest fee: 21.22070 COCOS   result: 1.16.2
+```
+
+
 ### Market
 
 
 ----------
-Method: limit_order_create
+Method: limit_order_create  
 Function: Create orders in a given market
-Parameters:
-    > amount(int)：Amount of tokens sold
-    > asset： Asset ID or native token sold
-    > min_amount(int)： The minimum amount of tokens required to be obtained
-    > min_amount_asset： Asset ID or native token required to be obtained
-    > fill(bool)： It is defaulted as False. If this flag is set to True, then this order must be completely purchased or rejected.
-    > account：Seller account name
+Parameters:  
+> amount(int)：Amount of tokens sold  
+> asset： Asset ID or native token sold  
+> min_amount(int)： The minimum amount of tokens required to be obtained  
+> min_amount_asset： Asset ID or native token required to be obtained  
+> fill(bool)： It is defaulted as False. If this flag is set to True, then this order must be completely purchased or rejected.  
+> account：Seller account name  
 
-Example：
+Example:
 ```python
 pprint(gph.limit_order_create(1, "1.3.0", 1, "1.3.1", account="test1"))
 ```
-Method: limit_order_cancel
-Function: Cancel the order in a given market
-Parameters:
-    > order_number(list)：ID of the limit order to be canceled
-    > account：Operator account name
+Method: limit_order_cancel  
+Function: Cancel the order in a given market  
+Parameters:  
+> order_number(list)：ID of the limit order to be canceled  
+> account：Operator account name  
 
-Example：
+Example:
 ```python
 pprint(gph.limit_order_cancel(["1.7.1"], account="test1"))
 ```
 
 ### Witness
 
-----------
-    Method: create_witness
-    Function: Create a witness candidate
-    Parameters:
-        > account_name：Witness candidate account
-        > url：Witness weblink
-        > key：Witness block signature public key
-Example:
 
+----------
+Method: create_witness  
+Function: Create a witness candidate  
+Parameters:  
+> account_name：Witness candidate account  
+> url：Witness weblink  
+> key：Witness block signature public key  
+
+Example:
 ```python
 pprint(gph.create_witness("test2", "", "COCOS5YnQru8mtYo9HkckwnuPe8fUcE4LSxdCfVheqBj9fMMK5zwiHb"))
 ```
-    Method: approve_witness
-    Function: Vote for witness candidates
-    Parameters:
-        > witnesses(list)：Witness account name or witness ID
-        > account：Voting account name
+Method: approve_witness  
+Function: Vote for witness candidates  
+Parameters:  
+> witnesses(list)：Witness account name or witness ID  
+> account：Voting account name  
 
-Example：
+Example:
 ```python
 pprint(gph.disapprove_worker(["1.14.1"], "test1"))
 ```
 ### Committee
 
-----------
-    Method: committee_member_create
-    Function: Create a committee member candidate
-    Parameters:
-        > url：weblink
-        > account：Committee member candidate's account
 
-Example
+----------
+Method: committee_member_create  
+Function: Create a committee member candidate  
+Parameters:  
+> url：weblink  
+> account：Committee member candidate's account  
+> 
+Example:
 ```python
 pprint(gph.committee_member_create(" ", "test2"))
 ```
 
-    Method: committee_member_update
-    Function: Update committee member candidate
-    Parameters: 
-        > new_url：New weblink
-        > account：Updated committee member candidate’s account
-
-Example：
+Method: committee_member_update  
+Function: Update committee member candidate  
+Parameters:  
+> new_url：New weblink  
+> account：Updated committee member candidate’s account  
+> 
+Example:
 ```python
 pprint(gph.committee_member_update(" ", "test2"))
 ```
-
 ### Proposal
 
-----------
 
-	Method: relate_world_view
-    Function: To link with the worldview, the developer can create the NH asset of the worldview only after linking to a certain worldview. The operation needs to be completed through a proposal to be approved by the creator of the worldview
-    Parameters:
-        > world_view：Worldview name
-        > account：Linked account name 
-Example：
+----------
+Method: relate_world_view  
+Function: To link with the worldview, the developer can create the NH asset of the worldview only after linking to a certain worldview. The operation needs to be completed through a proposal to be approved by the creator of the worldview  
+Parameters:  
+> world_view：Worldview name  
+> account：Linked account name  
+> 
+Example:
 ```python
 pprint(gph.relate_world_view("DRBALL", "test2"))
 ```
 
-    Method: approveproposal
-    Function: Approve proposals of other users to be linked with your worldview
-    Parameters:
-        > proposal_ids(list)：Proposal ID
-        > account：Update proposed account
-Example：
-
+Method: approveproposal  
+Function: Approve proposals of other users to be linked with your worldview  
+Parameters:  
+> proposal_ids(list)：Proposal ID  
+> account：Update proposed account  
+> 
+Example:
 ```python
 pprint(gph.approveproposal(["1.10.1"], "test1"))
 ```
 
 --------
 
-**Example of Wallet API Call: **  
+**Example of Wallet API Call:**  
 
-Method: unlock
-Function: Unlock the wallet for related wallet operations
-Parameters:
-	pwd：wallet password
-Example  
+Method: unlock  
+Function: Unlock the wallet for related wallet operations  
+Parameters:  
+	pwd：wallet password  
+Example:    
 ```python
 print(gph.wallet.unlock(pwd))
 ```
-Method: getAccounts
-Function: Get account information in the wallet database
+Method: getAccounts  
+Function: Get account information in the wallet database  
 
 ```python
 print(gph.wallet.getAccounts())
 ```
-Function: Get the corresponding private key in the wallet according to the public key given
-Parameters:
-	pub：Public key string
+Function: Get the corresponding private key in the wallet according to the public key given  
+Parameters:  
+	pub：Public key string  
 ```python
 print(gph.wallet.getPrivateKeyForPublicKey(pub))
 ```
-**Example of RPC Interface Call: **  
-Method: get_object
-Function: Get this object information
-Parameters:
-	object_id：Object id
-Example：
+**Example of RPC Interface Call:**  
+Method: get_object   
+Function: Get this object information  
+Parameters:  
+	object_id：Object id  
+Example:
 ```python
-print(gph.rpc.get_object("1.2.18")) 
+print(gph.rpc.get_object("1.2.18")) # Get the information of account with an id of "1.2.17"
 ```
-Function: Get contract details
-Parameters:
+Method: get_contract    
+Function: Get contract details  
+Parameters:  
 	contract_id：Contract id or contract name
-Example：  
+Example:  
 ```python
-print(gph.rpc.get_contract("1.16.0"))
+print(gph.rpc.get_contract("1.16.0")) # Get contract details with an id of"1.16.0"
 ```
 
 Main-Packages
 -------------
 **PythonMiddleware**
-	Description: The sub-modules correspond to all the classes involved in the blockchain system, such as accounts, assets, blocks, proposals, contracts, etc. Each class has a corresponding method to call. The graphene module has APIs related to the operation that can be called, such as transferring funds, creating accounts, creating assets, creating contracts, and so on.
+Description: The sub-modules correspond to all the classes involved in the blockchain system, such as accounts, assets, blocks, proposals, contracts, etc. Each class has a corresponding method to call. The graphene module has APIs related to the operation that can be called, such as transferring funds, creating accounts, creating assets, creating contracts, and so on.
 
  - PythonMiddleware.account module 
  - PythonMiddleware.aes module
@@ -931,7 +1091,7 @@ Main-Packages
  - PythonMiddleware.worker module
  
  **PythonMiddlewarebase**
-	Description: The sub-modules involve contents related to the underlying design, such as blockchain information, object type, operation, data structure, etc., which do not need to be changed in general. The chains module needs to be modified according to the use of the blockchain when initializing.
+Description: The sub-modules involve contents related to the underlying design, such as blockchain information, object type, operation, data structure, etc., which do not need to be changed in general. The chains module needs to be modified according to the use of the blockchain when initializing.
  
  - PythonMiddlewarebase.account module
  - PythonMiddlewarebase.asset_permissions module

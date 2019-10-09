@@ -1,4 +1,4 @@
-[中文](https://github.com/Cocos-BCX/Python-Middleware/blob/master/README_cn.md)
+[英文](https://github.com/Cocos-BCX/Python-Middleware/blob/master/README.md)
 
 Python Middleware For Cocos—BCX
 ==============
