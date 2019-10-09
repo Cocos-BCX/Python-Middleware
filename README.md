@@ -404,11 +404,11 @@ Prototype:
 ```
 Function: Send tokens to the recipient  
 Parameters:  
-	to: Recipient account name
-	amount(int): Amount of tokens sent
-	asset: Asset ID or token symbol
-	memo: Transfer memo
-	account: Sender account name
+	to: Recipient account name  
+	amount(int): Amount of tokens sent  
+	asset: Asset ID or token symbol  
+	memo: Transfer memo  
+	account: Sender account name  
   
 Example:
 ```python
@@ -445,15 +445,15 @@ Prototype:
 ```
 Function: Create token  
 Parameters:  
-	symbol: Asset symbol, regular ^[.A-Z]+$
-	precision(int): precise to decimal digit
-	amount(int): The amount of base assets (i.e. the created token, default 1)
-	asset: Base asset ID
-	_amount(int): quote asset (i.e. core asset, default 1)
-	_asset: quote asset
-	common_options(dict): Token option
-	bitasset_opts(dict): Bit token option (not required), if the default parameters is used to create bit tokens, just pass {}
-	account: Token creator
+	symbol: Asset symbol, regular ^[.A-Z]+$  
+	precision(int): precise to decimal digit  
+	amount(int): The amount of base assets (i.e. the created token, default 1)  
+	asset: Base asset ID  
+	_amount(int): quote asset (i.e. core asset, default 1)  
+	_asset: quote asset  
+	common_options(dict): Token option  
+	bitasset_opts(dict): Bit token option (not required), if the default parameters is used to create bit tokens, just pass {}  
+	account: Token creator  
 
 commen_options parameters example:  
 ```Python
@@ -529,11 +529,11 @@ transaction>>>: {'signatures': ['2015f7d1371d701d5ecbaef348ffed1120bc391cc0f8767
 Method: asset_issue  
 Function: Issue token  
 Parameters:  
-	amount(int): Issuance amount
-	asset: Token to be issued
-	issue_to_account: target account
-	memo: Additional message (not required)
-	account: Token creator
+	amount(int): Issuance amount  
+	asset: Token to be issued  
+	issue_to_account: target account  
+	memo: Additional message (not required)  
+	account: Token creator  
   
 Example:
 ```python
@@ -601,18 +601,18 @@ account="nicotest"
 pprint(gph.create_nh_asset(account, "COCOS", "snacktest", '{"name":"test1"}', account))
 ```
 
-**方法：delete_nh_asset**  
+**Method: delete_nh_asset**  
 
 Prototype:
 ```python
     def delete_nh_asset(self, asset_id, account=None):  
 ```
-功能：删除非同质资产  
+Function: 删除非同质资产  
 Parameters:
 > asset_id: 非同质资产ID  
 > account: 操作付费账户  
 
-示例：
+Example:
 ```python
 account="nicotest"
 pprint(gph.delete_nh_asset("4.2.4", account))
@@ -624,13 +624,13 @@ Prototype:
 ```python
     def transfer_nh_asset(self, to, nh_asset_id, account=None):  
 ```
-功能：转移非同质资产 将自己拥有的非同质资产转移给另外一个账户  
+Function: 转移非同质资产 将自己拥有的非同质资产转移给另外一个账户  
 Parameters:
 > to：to account，非同质资产的接收账户  
 > nh_asset_id: 非同质资产ID  
 > account: from account，非同质资产转出账户  
 
-示例：
+Example:
 ```python
 account="nicotest"
 #2019-09-19T06:08:46 create_nh_asset_operation nicotest fee: 1 COCOS   result: 4.2.5
@@ -661,36 +661,36 @@ account="nicotest"
 pprint(gph.create_nh_asset_order("test1", 1, "1.3.0", "4.2.4", " sell nh asset order test ", 100, "1.3.0", account))
 ```
 
-**方法：cancel_nh_asset_order**  
+**Method: cancel_nh_asset_order**  
 
-原型：
+Prototype:
 ```python
     def cancel_nh_asset_order(self, order, account=None):  
 ```
-功能：取消NH资产订单  
+Function: 取消NH资产订单  
 Parameters:
 > order: 非同质资产订单ID  
 > account: 操作付费账户  
 
-示例：
+Example:
 ```python
 account="nicotest"
 #2019-09-19T05:29:16 create_nh_asset_order_operation nicotest fee: 1 COCOS   result: 4.3.1 
 pprint(gph.cancel_nh_asset_order("4.3.1", account))
 ```
 
-**方法：fill_nh_asset_order**  
+**Method: fill_nh_asset_order**  
 
 Prototype:
 ```python
     def fill_nh_asset_order(self, order, account=None):
 ```
-功能：购买非同质资产  
+Function: 购买非同质资产  
 Parameters:
 > order: 非同质资产出售单 ID  
 > account: 购买者  
 
-示例：
+Example:
 ```python
 account="nicotest"
 #2019-09-19T06:20:38 create_nh_asset_order_operation nicotest fee: 1 COCOS   result: 4.3.2 
@@ -1021,23 +1021,23 @@ pprint(gph.approveproposal(["1.10.1"], "test1"))
 
 **Example of Wallet API Call:**  
 
-Method: unlock
-Function: Unlock the wallet for related wallet operations
-Parameters:
-	pwd：wallet password
-Example  
+Method: unlock  
+Function: Unlock the wallet for related wallet operations  
+Parameters:  
+	pwd：wallet password  
+Example:    
 ```python
 print(gph.wallet.unlock(pwd))
 ```
-Method: getAccounts
-Function: Get account information in the wallet database
+Method: getAccounts  
+Function: Get account information in the wallet database  
 
 ```python
 print(gph.wallet.getAccounts())
 ```
-Function: Get the corresponding private key in the wallet according to the public key given
-Parameters:
-	pub：Public key string
+Function: Get the corresponding private key in the wallet according to the public key given  
+Parameters:  
+	pub：Public key string  
 ```python
 print(gph.wallet.getPrivateKeyForPublicKey(pub))
 ```
