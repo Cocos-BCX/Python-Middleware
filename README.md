@@ -1,6 +1,6 @@
 [中文](https://github.com/Cocos-BCX/Python-Middleware/blob/master/README_cn.md)
 
-Python Middleware For Cocos—BCX
+Python Middleware For Cocos-BCX
 ==============
 * [Get Started](#Get-Started)
 * [API User Guide](#API-User-Guide)
@@ -316,10 +316,10 @@ Function: Create an account and import the private key into the wallet
 Parameters:  
    account_name: Account name registration rules, /^[a-z][a-z0-9.-]{4,63}$/, begin with lowercase letters + digits or lowercase letters or dots or dashes -, with a length of 4 to 63 characters  
     password: account password  
-Note: Only a lifetime account can create an account  
-* 只有终身账户才可以创建账户  
-* 账号有owner key，active key，memo key，新创建账号的owner key 和active key不同，active key和memo key相同。在调用返回结果的operations里可以查看到对应key的公钥。
-* 创建好的账号秘钥保存在钱包里面，请及时使用**getPrivateKeyForPublicKey**获取账号秘钥进行备份，避免秘钥丢失。
+Note:   
+* Only a lifetime account can create an account  
+* The account has an owner key, an active key, and a memo key. The owner key and the active key of the newly created account are different, while the active key and the memo key are the same. The public key corresponding to each key can be viewed in the operations that calls the returned result.
+* The private key of the account newly created is stored in the wallet, please use getPrivateKeyForPublicKey to get the private key for backup, so as to avoid the loss of the key.
 
 Example:  
 ```python
@@ -607,10 +607,10 @@ Prototype:
 ```python
     def delete_nh_asset(self, asset_id, account=None):  
 ```
-Function: 删除非同质资产  
+Function: delete the NH asset  
 Parameters:
-> asset_id: 非同质资产ID  
-> account: 操作付费账户  
+> asset_id: NH asset ID  
+> account: Paid account that executes the operation  
 
 Example:
 ```python
@@ -624,11 +624,11 @@ Prototype:
 ```python
     def transfer_nh_asset(self, to, nh_asset_id, account=None):  
 ```
-Function: 转移非同质资产 将自己拥有的非同质资产转移给另外一个账户  
+Function: Transfer NH assets. Transfer the NH asset owned by current account to another account.  
 Parameters:
-> to：to account，非同质资产的接收账户  
-> nh_asset_id: 非同质资产ID  
-> account: from account，非同质资产转出账户  
+> to：to account，the account that receives the NH asset.  
+> nh_asset_id: the NH asset ID  
+> account: from account，the account that the NH asset is transferred out from  
 
 Example:
 ```python
@@ -667,10 +667,10 @@ Prototype:
 ```python
     def cancel_nh_asset_order(self, order, account=None):  
 ```
-Function: 取消NH资产订单  
+Function: Cancel the open order of NH asset  
 Parameters:
-> order: 非同质资产订单ID  
-> account: 操作付费账户  
+> order: ID NH asset order ID  
+> account: Paid account that executes the operation  
 
 Example:
 ```python
@@ -685,10 +685,10 @@ Prototype:
 ```python
     def fill_nh_asset_order(self, order, account=None):
 ```
-Function: 购买非同质资产  
+Function: purchase NH assets  
 Parameters:
-> order: 非同质资产出售单 ID  
-> account: 购买者  
+> order: NH asset sell order ID  
+> account: Buyer  
 
 Example:
 ```python
@@ -807,12 +807,12 @@ value_list = [
 ```
 Example:
 ```python
-# gph初始化部分 参考合约创建示例
+# gph Initialization. Take contract creation sample for reference.
 
 defaultAccount="nicotest"
 contract_name = "contract.debug.hello"
 
-#合约调用: contract.debug.hello
+# Contract call: contract.debug.hello
 value_list=[]
 pprint(gph.call_contract_function(contract_name, "hello", value_list=value_list, account=defaultAccount))
 ```
@@ -859,11 +859,11 @@ Prototype:
 ```python
     def revise_contract(self, contract, data, account=None):
 ```
-Function: 重置合约内容
+Function: Reset contract content
 Parameters:
-> contract：需要重置的合约的名称或 ID   
-> data：合约新内容  
-> account：合约拥有者  
+> contract: The name or ID of the contract that needs to be reset   
+> data: New content of the contract  
+> account: contract owner  
 
 Example: 
 ```python
@@ -902,7 +902,7 @@ transaction>>>: {'ref_block_num': 11181, 'ref_block_prefix': 1022871651, 'extens
   'signatures': ['1f33824255bc213b2b3a1ced2c1dd970ffc11345f95250870179d40154a4432dc11b16a373a8527cb0cf617de49669d52d25ef5fa4a4b6826908132aa674201e4d']}]
 ```
 
-账号操作记录：
+Operation log:
 ``` text
 unlocked >>> get_account_history nicotest 3
 get_account_history nicotest 3
