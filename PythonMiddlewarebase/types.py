@@ -206,6 +206,20 @@ class Array():
         return json.dumps(r)
 
 
+class Pair():
+    def __init__(self, _type, d):
+        self._type = _type
+        self.data = d
+    def __bytes__(self):       
+        b = b"".join([bytes(self._type),bytes(self.data)])
+        return b
+    def __str__(self):
+        r = []
+        r.append(JsonObj(self._type))
+        r.append(JsonObj(self.data))
+        return json.dumps(r)
+
+
 class PointInTime():
     def __init__(self, d):
         self.data = d
@@ -343,9 +357,9 @@ class ObjectId():
     def __init__(self, object_str, type_verify=None):
         if len(object_str.split(".")) == 3:
             space, type, id = object_str.split(".")
-            self.space = int(space)
-            self.type = int(type)
-            self.instance = Id(int(id))
+            self.space = Uint8(space)
+            self.type = Uint8(type)
+            self.instance = Uint64(id)
             self.Id = object_str
             if type_verify:
                 assert object_type[type_verify] == int(type),\

@@ -192,5 +192,5 @@ class PrivateKey(GPHPrivateKey):
     """
     def __init__(self, *args, **kwargs):
         if "prefix" not in kwargs:
-            kwargs["prefix"] = default_prefix  # make prefix GPH
+            kwargs["prefix"] = default_prefix  
         super(PrivateKey, self).__init__(*args, **kwargs)

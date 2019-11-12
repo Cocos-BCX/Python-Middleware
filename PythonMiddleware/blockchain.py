@@ -190,23 +190,39 @@ class Blockchain(object):
                       transaction contented and thus identifies a transaction
                       uniquely.
         """
-        print("transaction>>>:", transaction)
-        counter = 0
-        start = self.get_current_block_num()-1
-        for block in self.blocks(start=start):
-            # print("block...", block)
-            counter += 1
-            index=0
-            for tx in block["transactions"]:
-                # print("---tx>:", tx)
-                if sorted(tx[1]["signatures"]) == sorted(transaction["signatures"]):
-                    # tx['transactions']=block["transaction_ids"][index]
-                    # tx[1]['transactions']=block["transactions"][index][0]
-                    tx[1]['block'] = block["block_num"]
-                    return tx
-                index += 1
-            if counter > limit:
-                raise Exception("The operation has not been added after 10 blocks!")
+        # print("transaction>>>:", transaction)
+        # counter = 0
+        # start = self.get_current_block_num()-1
+        # for block in self.blocks(start=start):
+        #     # print("block...", block)
+        #     counter += 1
+        #     index=0
+        #     for tx in block["transactions"]:
+        #         # print("---tx>:", tx)
+        #         if sorted(tx[1]["signatures"]) == sorted(transaction["signatures"]):
+        #             # tx['transactions']=block["transaction_ids"][index]
+        #             # tx[1]['transactions']=block["transactions"][index][0]
+        #             tx[1]['block'] = block["block_num"]
+        #             return tx
+        #         index += 1
+        #     if counter > limit:
+        #         raise Exception("The operation has not been added after 10 blocks!")
+        # while 1:
+        while 1:
+            tx_info = self.graphene.rpc.get_transaction_by_id(transaction)
+            # print("result>>>", result)
+            if tx_info["operation_results"]:
+                break
+            time.sleep(0.1)
+        block_num = self.graphene.rpc.get_transaction_in_block_info(transaction)["block_num"]
+        tx = {
+            "block_num": block_num,
+            "trx_id": transaction,
+            "transaction": tx_info            
+        }
+        return tx
+            
+            
 
     def get_all_accounts(self, start='', stop='', steps=1e3, **kwargs):
         """ Yields account names between start and stop.

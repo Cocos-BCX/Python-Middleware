@@ -37,7 +37,7 @@ class DataDir(object):
          Furthermore, it offers an interface to generated backups
          in the `backups/` directory every now and then.
     """
-    appname = "graphene-new1"
+    appname = "graphene-cocosnewlib1"
     appauthor = "Fabian Schuh"
     storageDatabase = "graphene.sqlite"
 

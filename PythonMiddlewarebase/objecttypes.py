@@ -12,6 +12,7 @@ object_type["call_order"] = 8
 object_type["custom"] = 9
 object_type["proposal"] = 10
 object_type["operation_history"] = 11
+object_type["crontab"] = 12
 object_type["withdraw_permission"] = 12
 object_type["vesting_balance"] = 13
 object_type["worker"] = 14
@@ -19,7 +20,7 @@ object_type["balance"] = 15
 object_type["contract"] = 16
 object_type["contract_data"] = 17
 object_type["file"] = 18
-object_type["crontab"] = 19
+# object_type["crontab"] = 19
 object_type["OBJECT_TYPE_COUNT"] = 20
 
 object_type["nh_asset_creator"] = 0

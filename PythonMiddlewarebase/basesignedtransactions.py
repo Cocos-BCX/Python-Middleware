@@ -60,7 +60,7 @@ class Signed_Transaction(GrapheneObject):
                     kwargs['operations'] = Array([opklass(a) for a in kwargs["operations"]])
                 else:
                     kwargs['operations'] = Array(kwargs["operations"])
-            # print("kwargs:>>>", kwargs)
+            # print("kwargs:>>>", kwargs.items())
 
             super().__init__(OrderedDict([
                 ('ref_block_num', Uint16(kwargs['ref_block_num'])),
