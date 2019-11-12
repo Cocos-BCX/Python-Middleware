@@ -48,8 +48,8 @@ setup(
         'Topic :: Office/Business :: Financial',
     ],
     install_requires=[
-        "ecdsa==0.13",
-        "requests==2.19.1",
+        "ecdsa==0.13.3",
+        "requests==2.20.0",
         "websocket-client==0.48.0",
         "pylibscrypt==1.7.1",
         "pycryptodome==3.6.6",
