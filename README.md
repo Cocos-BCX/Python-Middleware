@@ -43,13 +43,13 @@ known_chains = {
 
 ## 2. 安装命令：  
 ``` shell
-python3 setup.py install --user
+python3.5 setup.py install --user
 ```
 
 ## 3. 可能遇到的问题：  
 ### 3.1 缺少 setuptools 依赖：  
 ``` text   
-test@test01:/mnt/Python-Middleware# python3 setup.py install --user
+test@test01:/mnt/Python-Middleware# python3.5 setup.py install --user
 Traceback (most recent call last):
   File "setup.py", line 3, in <module>
     from setuptools import setup
@@ -63,7 +63,7 @@ sudo apt-get install python3-setuptools
 
 ### 3.2 缺少gcc等相关依赖  
 ``` text   
-test@test01:/mnt/Python-Middleware# python3 setup.py install --user
+test@test01:/mnt/Python-Middleware# python3.5 setup.py install --user
 zip_safe flag not set; analyzing archive contents...
 
 Installed /mnt/Python-Middleware/.eggs/pytest_runner-5.2-py3.5.egg
