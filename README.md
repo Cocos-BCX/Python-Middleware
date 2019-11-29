@@ -1,39 +1,123 @@
 Python Middleware For BCX
 ==============
-* [入门](#入门)
+* [安装和入门](#安装和入门)
 * [使用API](#使用API)
 * [Main-Packages](#Main-Packages)
 
-入门
+安装和入门
 ---------------
 
-我们建议在Ubuntu 16.04 LTS（64位）上构建 ，默认python3.5
 
-**手动安装：**
-    建议在虚拟环境中安装相关库文件
-    sudo apt-get install virtualenv
-    创建一个虚拟环境
-    virtualenv -p /usr/bin/python3 xxx(所创建的文件夹名)
-    进入虚拟环境
-    cd xxx
-    source bin/activate
-    安装库文件
-    cd python-PythonMiddleware
-    python3 setup.py install
-	
-**修改链参数：**
+下面的安装说明是在Ubuntu 16.04 LTS（64位）上构建，需要python3环境。  
 
-    vi python-PythonMiddleware/PythonMiddlewarebase/chains.py # 编辑链相关参数
-	
-	```python
-	known_chains = {
-    "xxxxxx": {
-        "chain_id": "xxxxxx",
-        "core_symbol": "xxxxxx",
-        "prefix": "xxxxxx"} # chains.py中所编辑的代码
-	```
-	python3 setup.py install --user # 重新加载python库
+## 1. 准备工作
+### 1.1 python3 环境  
+python版本：≥ python3.5  
+ubuntu 16.04 python3.5 安装：  
+``` shell  
+sudo apt-get install python3.5 -y  
+```  
 
+### 1.2 Python-Middleware链参数配置  
+主要是chain_id，修改文件： PythonMiddlewarebase/chains.py  
+``` text
+known_chains = {
+"xxxxxx": {
+    "chain_id": "xxxxxx", # 链ID
+    "core_symbol": "xxxxxx", # 核心资产，默认COCOS
+    "prefix": "xxxxxx"} # 前缀，默认COCOS
+```  
+
+示例：  
+``` python 
+default_prefix = "COCOS"
+
+known_chains = { 
+    "COCOS": {
+        "chain_id": "c1ac4bb7bd7d94874a1cb98b39a8a582421d03d022dfa4be8c70567076e03ad0",
+        "core_symbol": "COCOS",
+        "prefix": "COCOS"
+    }
+} 
+```
+
+## 2. 安装命令：  
+``` shell
+python3 setup.py install --user
+```
+
+## 3. 可能遇到的问题：  
+### 3.1 缺少 setuptools 依赖：  
+``` text   
+test@test01:/mnt/Python-Middleware# python3 setup.py install --user
+Traceback (most recent call last):
+  File "setup.py", line 3, in <module>
+    from setuptools import setup
+ImportError: No module named 'setuptools'
+```  
+
+**解决：**   
+``` shell  
+sudo apt-get install python3-setuptools  
+```  
+
+### 3.2 缺少gcc等相关依赖  
+``` text   
+test@test01:/mnt/Python-Middleware# python3 setup.py install --user
+zip_safe flag not set; analyzing archive contents...
+
+Installed /mnt/Python-Middleware/.eggs/pytest_runner-5.2-py3.5.egg
+
+......
+
+Processing pycrypto-2.6.1.tar.gz
+Writing /tmp/easy_install-6s2q9_bu/pycrypto-2.6.1/setup.cfg
+Running pycrypto-2.6.1/setup.py -q bdist_egg --dist-dir /tmp/easy_install-6s2q9_bu/pycrypto-2.6.1/egg-dist-tmp-dnhffkfr
+src/_fastmath.c:31:20: fatal error: Python.h: No such file or directory
+compilation terminated.
+error: Setup script exited with error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
+```  
+
+
+**解决：**
+``` shell  
+sudo apt-get install build-essential python3-dev libssl-dev libffi-dev libxml2 libxml2-dev libxslt1-dev zlib1g-dev -y  
+```
+
+## 4. 安装验证：   
+
+### 4.1 pip list查看
+pip list可以查看到PythonMiddleware。  
+
+``` text  
+test@test01:/mnt/Python-Middleware# pip3 list
+appdirs (1.4.3)
+certifi (2019.11.28)
+chardet (3.0.4)
+ecdsa (0.13.3)
+Events (0.3)
+idna (2.7)
+pip (8.1.1)
+pycrypto (2.6.1)
+pycryptodome (3.6.6)
+pylibscrypt (1.7.1)
+PythonMiddleware (1.0.0)
+requests (2.20.0)
+scrypt (0.8.6)
+setuptools (20.7.0)
+six (1.13.0)
+urllib3 (1.24.3)
+websocket-client (0.48.0)
+websockets (6.0)
+wheel (0.29.0)
+```  
+
+**如果没有pip3需要先安装：**
+``` shell  
+sudo apt install python3-pip -y
+```  
+
+### 4.2 使用PythonMiddleware
 **构建pyhton脚本：**
 ```python
 from PythonMiddleware.graphene import Graphene
@@ -54,9 +138,10 @@ gph.wallet.addPrivateKey(privateKey) # 向钱包中添加私钥
 config["default_account"] = yourname # 向钱包数据库中添加默认信息
 ```
 
-使用API
--------------
-**Graphene实例调用示例：**
+使用API  
+-------------  
+
+**Graphene实例调用示例：**  
 * [账户相关](#账户相关)  
 * [资产相关](#资产相关)  
 * [NH资产相关](#NH资产相关)  
