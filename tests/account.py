@@ -13,8 +13,8 @@ set_shared_graphene_instance(gph)
 
 #account info for test
 defaultAccount="nicotest"
-privateKey="5KgiWEMJPYbLpMhX6jvS9yBehhr4mWZhxX7hfxZQEo3rs8iakUQ"
-pub="COCOS5X4bfMnAmeWhLoiHKUNrRu7D3LTXKBZQkZvWGj9YCTDBAYaSXU"
+privateKey="5J2SChqa9QxrCkdMor9VC2k9NT4R4ctRrJA6odQCPkb3yL89vxo"
+pub="COCOS56a5dTnfGpuPoWACnYj65dahcXMpTrNQkV3hHWCFkLxMF5mXpx"
 
 #创建钱包
 if gph.wallet.created() is False: 
@@ -44,10 +44,12 @@ pprint(gph.wallet.getAccounts())
 #     print(repr(e))
 #     gph.wallet.removeAccount(None)
 #pprint(gph.wallet.getAccounts())
-account="nicotest"
+#account="nicotest"
 #pprint(gph.register_nh_asset_creator(account))
 #pprint(gph.create_world_view("snacktest", account))
 
-pprint(gph.create_nh_asset(account, "COCOS", "snacktest", '{"name":"test1"}', account))
+#pprint(gph.create_nh_asset(account, "COCOS", "snacktest", '{"name":"test1"}', account))
 
+pprint(gph.transfer(to="init7",amount=11, asset="1.3.0", memo=["test memo 0", 0], account="nicotest"))
+pprint(gph.transfer(to="init8",amount=12, asset="1.3.0", memo=["test memo 1", 1], account="nicotest"))
 

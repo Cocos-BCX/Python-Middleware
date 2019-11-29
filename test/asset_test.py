@@ -101,7 +101,7 @@ class AssetTestCase(unittest.TestCase):
             "amount": 10000000,
             "asset": "1.3.3",
             "issue_to_account": "1.2.25",
-            "memo": "",
+            "memo": ["",0],
             "account": "1.2.25"
         }
         gph = Config().gph
@@ -249,8 +249,8 @@ if __name__ == "__main__":
     # case3()
     # case4 = AssetTestCase("testUpdateBitAsset")
     # case4()
-    # case5 = AssetTestCase("testIssueAsset")
-    # case5()
+    case5 = AssetTestCase("testIssueAsset")
+    case5()
     # case6 = AssetTestCase("testReserveAsset")
     # case6()
     # case7 = AssetTestCase("testUpdateFeedProducers")
@@ -267,5 +267,5 @@ if __name__ == "__main__":
     # case12()
     # case13 = AssetTestCase("testCancelLimitOrder")
     # case13()
-    case14 = AssetTestCase("testAssetClaimFees")
-    case14()
+    #case14 = AssetTestCase("testAssetClaimFees")
+    #case14()

@@ -16,7 +16,7 @@ from .vesting import Vesting
 from .worker import Worker
 from .contract import Contract
 from .storage import configStorage as config
-from .extensions import extensions as Extensions,getExtensionObjectFromString
+from .extensions import extensions as Extensions, getExtensionObjectFromString
 from .exceptions import (
     AccountExistsException,
     AccountDoesNotExistsException,
@@ -124,8 +124,10 @@ class Graphene(object):
         self.proposer = kwargs.get("proposer", None)
         self.crontaber = kwargs.get("crontaber", None)
         self.crontab_start_time = kwargs.get("crontab_start_time", None)
-        self.crontab_execute_interval = kwargs.get("crontab_execute_interval", None)
-        self.crontab_scheduled_execute_times = kwargs.get("crontab_scheduled_execute_times", None)
+        self.crontab_execute_interval = kwargs.get(
+            "crontab_execute_interval", None)
+        self.crontab_scheduled_execute_times = kwargs.get(
+            "crontab_scheduled_execute_times", None)
         self.proposal_expiration = int(kwargs.get("proposal_expiration", 3600))
         self.proposal_review = kwargs.get("proposal_review", None)
         self.bundle = bool(kwargs.get("bundle", False))
@@ -135,7 +137,7 @@ class Graphene(object):
         self.config = config
 
         # print("self.proposer:", self.proposer)
-        
+
         if not self.offline:
             self.connect(node=node,
                          rpcuser=rpcuser,
@@ -203,7 +205,7 @@ class Graphene(object):
             return self.txbuffer
         elif self.bundle:
             # In case we want to add more ops to the tx (bundle)
-            
+
             self.txbuffer.appendSigner(account, permission)
             # print("txbuffer>>>:",self.txbuffer.json())
             return self.txbuffer.json()
@@ -228,7 +230,7 @@ class Graphene(object):
             txbuffer = TransactionBuilder(tx, graphene_instance=self)
         else:
             txbuffer = self.txbuffer
-        
+
         txbuffer.appendWif(wifs)
         txbuffer.appendMissingSignatures()
         txbuffer.sign()
@@ -250,7 +252,7 @@ class Graphene(object):
         """
         return self.rpc.get_dynamic_global_properties()
 
-    def transfer(self, to, amount, asset, memo="", account=None):
+    def transfer(self, to, amount, asset, memo=["", 0], account=None):
         """ Transfer an asset to another account.
 
             :param str to: Recipient
@@ -269,71 +271,26 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
         to = Account(to, graphene_instance=self)
-
-        memoObj = Memo(
-            from_account=account,
-            to_account=to,
-            graphene_instance=self
-        )
-
+        memoObj=None
+        if(len(memo[0]) != 0):
+            if(memo[1] == 0):
+                memoObj = [0, memo[0]]
+            elif[memo[1] == 1]:
+                memoObj = [1, Memo(
+                    from_account=account,
+                    to_account=to,
+                    graphene_instance=self
+                ).encrypt(memo[0])
+                ]
         op = operations.Transfer(**{
-            
+
             "from": account["id"],
             "to": to["id"],
             "amount": {
                 "amount": int(amount),
                 "asset_id": amount.asset["id"]
             },
-            "memo": memoObj.encrypt(memo),
-            "prefix": self.rpc.chain_params["prefix"]
-        })
-        return self.finalizeOp(op, account, "active")
-
-    def transferWithExtensions(self, to, amount, asset, memo="",extensions=[], account=None):
-        """ Transfer an asset to another account.
-
-            :param str to: Recipient
-            :param float amount: Amount to transfer
-            :param str asset: Asset to transfer
-            :param str memo: (optional) Memo, may begin with `#` for encrypted messaging
-            :param str account: (optional) the source account for the transfer if not ``default_account``
-        """
-        from .memo import Memo
-        if not account:
-            if "default_account" in config:
-                account = config["default_account"]
-        if not account:
-            raise ValueError("You need to provide an account")
-        if(amount <0 ):
-            raise ValueError("You need to provide effective amount")
-        account = Account(account, graphene_instance=self)
-        amount = Amount(amount, asset, graphene_instance=self)
-        to = Account(to, graphene_instance=self)
-
-        if not isinstance(extensions, (list, set)):
-            extensions = set(extensions)
-        mextensions=[]
-        for extension in extensions:
-            try:
-                if isinstance(extension,Extensions):
-                    mextensions.append("append:"+extension.string())
-            except:
-                pass
-        memoObj = Memo(
-            from_account=account,
-            to_account=to,
-            graphene_instance=self
-        )
-        op = operations.Transfer(**{
-            
-            "from": account["id"],
-            "to": to["id"],
-            "amount": {
-                "amount": int(amount),
-                "asset_id": amount.asset["id"]
-            },
-            "memo": memoObj.encrypt(memo),
-            "extensions":mextensions,
+            "memo": memoObj,
             "prefix": self.rpc.chain_params["prefix"]
         })
         return self.finalizeOp(op, account, "active")
@@ -348,9 +305,10 @@ class Graphene(object):
         #     raise ValueError("You need to provide asset")
         account = Account(account, full=False, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
-        min_amount = Amount(min_amount, min_amount_asset, graphene_instance=self)
+        min_amount = Amount(min_amount, min_amount_asset,
+                            graphene_instance=self)
         op = operations.Limit_order_create(**{
-            
+
             "seller": account["id"],
             "amount_to_sell": {
                 "amount": int(amount),
@@ -366,7 +324,6 @@ class Graphene(object):
             "extensions": {}
         })
         return self.finalizeOp(op, account["name"], "active")
-
 
     def limit_order_cancel(self, order_numbers, account=None):
         """ Cancels an order you have placed in a given market. Requires
@@ -389,7 +346,7 @@ class Graphene(object):
         for order in order_numbers:
             op.append(
                 operations.Limit_order_cancel(**{
-                    
+
                     "fee_paying_account": account["id"],
                     "order": order,
                     "extensions": [],
@@ -408,7 +365,7 @@ class Graphene(object):
         amount = Amount(amount, asset, graphene_instance=self)
         _amount = Amount(_amount, _asset, graphene_instance=self)
         op = operations.Call_order_update(**{
-            
+
             "funding_account": account["id"],
             "delta_collateral": {
                 "amount": int(amount),
@@ -417,7 +374,7 @@ class Graphene(object):
             "delta_debt": {
                 "amount": int(_amount),
                 "asset_id": _amount.asset["id"]
-            }, 
+            },
             "extensions": {}
         })
         return self.finalizeOp(op, account["name"], "active")
@@ -505,23 +462,25 @@ class Graphene(object):
         if password:
             active_key = PasswordKey(account_name, password, role="active")
             owner_key = PasswordKey(account_name, password, role="owner")
-            #memo_key = PasswordKey(account_name, password, role="memo")#nico chang: memo key 使用active角色，避免memo与active，公钥不一致
+            # memo_key = PasswordKey(account_name, password, role="memo")#nico chang: memo key 使用active角色，避免memo与active，公钥不一致
             active_pubkey = active_key.get_public_key()
             owner_pubkey = owner_key.get_public_key()
             #memo_pubkey = memo_key.get_public_key()
             memo_pubkey = active_key.get_public_key()
             active_privkey = active_key.get_private_key()
-            owner_privkey   = owner_key.get_private_key()
+            owner_privkey = owner_key.get_private_key()
             #memo_privkey = memo_key.get_private_key()
             # memo_privkey = active_key.get_private_key()
             # store private keys
             if storekeys:
                 self.wallet.addPrivateKey(owner_privkey)
                 self.wallet.addPrivateKey(active_privkey)
-                #self.wallet.addPrivateKey(memo_privkey)
+                # self.wallet.addPrivateKey(memo_privkey)
         elif owner_key and active_key:
-            active_pubkey = PublicKey(active_key, prefix=self.rpc.chain_params["prefix"])
-            owner_pubkey = PublicKey(owner_key, prefix=self.rpc.chain_params["prefix"])
+            active_pubkey = PublicKey(
+                active_key, prefix=self.rpc.chain_params["prefix"])
+            owner_pubkey = PublicKey(
+                owner_key, prefix=self.rpc.chain_params["prefix"])
             # memo_pubkey = PublicKey(memo_key, prefix=self.rpc.chain_params["prefix"])
             memo_pubkey = active_pubkey
         else:
@@ -554,7 +513,7 @@ class Graphene(object):
         # voting_account = Account(proxy_account or "proxy-to-self")
 
         op = {
-            
+
             "registrar": registrar["id"],
             # "referrer": referrer["id"],
             # "referrer_percent": referrer_percent * 100,
@@ -594,7 +553,7 @@ class Graphene(object):
         # }
         # common_options["core_exchange_rate"] = {"base": base, "quote": quote}
         op = operations.Asset_create(**{
-            
+
             "issuer": account["id"],
             "symbol": symbol,
             "precision": precision,
@@ -618,7 +577,7 @@ class Graphene(object):
         # new_issuer = Account(account)
         # print("n_issuer_id", new_issuer["id"])
         op = operations.Asset_update(**{
-            
+
             "issuer": issuer["id"],
             "asset_to_update": asset,
             # "new_issuer": new_issuer["id"],
@@ -662,7 +621,8 @@ class Graphene(object):
         if not collateral:
             raise ValueError("You need to provide to collateral")
         if collateral < 0:
-            raise ValueError("The collateral need to greater than or equal to 0")
+            raise ValueError(
+                "The collateral need to greater than or equal to 0")
         if not account:
             if "default_account" in config:
                 account = config["default_account"]
@@ -699,7 +659,7 @@ class Graphene(object):
         #     "extensions": {}
         # }
         op = operations.Asset_update_bitasset(**{
-            
+
             "issuer": issuer["id"],
             "asset_to_update": asset,
             "new_options": new_options,
@@ -715,11 +675,12 @@ class Graphene(object):
                 account = config["default_account"]
             else:
                 raise ValueError("You need to provide to an account")
-        assert Asset(asset).is_bitasset, "Asset needs to be a bitasset/market pegged asset"
+        assert Asset(
+            asset).is_bitasset, "Asset needs to be a bitasset/market pegged asset"
         asset = Asset(asset, graphene_instance=self)["id"]
         issuer = Account(account, graphene_instance=self)
         op = operations.Asset_update_feed_producers(**{
-            
+
             "issuer": issuer["id"],
             "asset_to_update": asset,
             "new_feed_producers": [Account(x)["id"] for x in feed_producers],
@@ -727,7 +688,7 @@ class Graphene(object):
         })
         return self.finalizeOp(op, issuer, "active")
 
-    def asset_issue(self, amount, asset, issue_to_account, memo="", account=None):
+    def asset_issue(self, amount, asset, issue_to_account, memo=["",0], account=None):
         if not account:
             if "default_account" in config:
                 account = config["default_account"]
@@ -736,15 +697,27 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         _account = Account(issue_to_account, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
+        from .memo import Memo
+        memoObj=None
+        if(len(memo[0]) != 0):
+            if(memo[1] == 0):
+                memoObj = [0, memo[0]]
+            elif[memo[1] == 1]:
+                memoObj = [1, Memo(
+                    from_account=account,
+                    to_account=_account,
+                    graphene_instance=self
+                ).encrypt(memo[0])
+                ]
         op = operations.Asset_issue(**{
-            
+
             "issuer": account["id"],
             "asset_to_issue": {
                 "amount": int(amount),
                 "asset_id": amount.asset["id"]
             },
             "issue_to_account": _account["id"],
-            "memo": memo,
+            "memo": memoObj,
             "extensions": {}
         })
         return self.finalizeOp(op, account, "active")
@@ -760,7 +733,7 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         # amount = Amount(amount, asset)
         op = operations.Asset_fund_fee_pool(**{
-            
+
             "from_account": account["id"],
             "asset_id": asset,
             "amount": amount,
@@ -779,7 +752,7 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
         op = operations.Asset_settle(**{
-            
+
             "account": account["id"],
             "amount": {
                 "amount": int(amount),
@@ -823,7 +796,7 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         asset_to_settle = Asset(asset_to_settle, graphene_instance=self)["id"]
         op = operations.Asset_global_settle(**{
-            
+
             "issuer": account["id"],
             "asset_to_settle": asset_to_settle,
             "settle_price": settle_price,
@@ -902,7 +875,7 @@ class Graphene(object):
             self._test_weights_treshold(authority)
 
         op = operations.Account_update(**{
-            
+
             "account": account["id"],
             permission: authority,
             "extensions": {},
@@ -982,7 +955,7 @@ class Graphene(object):
             self._test_weights_treshold(authority)
 
         op = operations.Account_update(**{
-            
+
             "account": account["id"],
             permission: authority,
             "extensions": {}
@@ -1013,19 +986,20 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         account["options"]["memo_key"] = key
         op = operations.Account_update(**{
-            
+
             "account": account["id"],
             "new_options": account["options"],
             "extensions": {}
         })
         return self.finalizeOp(op, account["name"], "active")
 
-    def AccountAddExtension(self,assetID,itemVER,itemID,extensionData,account=None):
+    def AccountAddExtension(self, assetID, itemVER, itemID, extensionData, account=None):
         """
             return -1 : This data has already existed
         """
-        if (not assetID) or (not itemVER) or (not itemID) :
-            raise ValueError("You need to provide an assetId and a itemVER and itemID ")
+        if (not assetID) or (not itemVER) or (not itemID):
+            raise ValueError(
+                "You need to provide an assetId and a itemVER and itemID ")
         if not extensionData:
             raise ValueError("You need to provide an extensionData")
         if not account:
@@ -1035,19 +1009,19 @@ class Graphene(object):
             raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         options = account["options"]
-        extension=Extensions(assetID,itemVER,itemID,extensionData)
-        #index=extension.findExtension(options["extensions"])
-        #if (index>-1):#找到目标数据，不能直接添加，可执行修改
+        extension = Extensions(assetID, itemVER, itemID, extensionData)
+        # index=extension.findExtension(options["extensions"])
+        # if (index>-1):#找到目标数据，不能直接添加，可执行修改
         #    return -1
-        #else:
+        # else:
         #    options["extensions"]=[]
         #    options["extensions"].append("add:"+extension.string())
-        #options["extensions"]=[]
+        # options["extensions"]=[]
         # print(extension.string())
         options["extensions"].append(extension.string())
         # print(options["extensions"])
         op = operations.Account_update(**{
-            
+
             "account": account["id"],
             "new_options": options,
             "extensions": {},
@@ -1085,7 +1059,7 @@ class Graphene(object):
         # options["extensions"].append("erase:"+extension.string())
 
         op = operations.Account_update(**{
-            
+
             "account": account["id"],
             "new_options": options,
             "extensions": {},
@@ -1093,10 +1067,10 @@ class Graphene(object):
         })
         return self.finalizeOp(op, account["name"], "active")
 
-    def AccountChangeExtension(self,assetID,itemVER,itemID,extensionData,account=None):
-        return self.AccountAddExtension(assetID,itemVER,itemID,extensionData,account)
+    def AccountChangeExtension(self, assetID, itemVER, itemID, extensionData, account=None):
+        return self.AccountAddExtension(assetID, itemVER, itemID, extensionData, account)
 
-    def AccountFindExtension(self,itemVER,itemID,account=None):
+    def AccountFindExtension(self, itemVER, itemID, account=None):
         """
             return -1 : This data has already existed 
         """
@@ -1109,11 +1083,11 @@ class Graphene(object):
             raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         options = account["options"]
-        retExtensions=[]
-        if(itemVER=="*"):
+        retExtensions = []
+        if(itemVER == "*"):
             for extension in options["extensions"]:
                 retExtensions.append(getExtensionObjectFromString(extension))
-        elif (itemID=="*"):
+        elif (itemID == "*"):
             for extension in options["extensions"]:
                 temp = getExtensionObjectFromString(extension)
                 if temp:
@@ -1218,7 +1192,7 @@ class Graphene(object):
                 raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         op = operations.Committee_member_create(**{
-            
+
             "committee_member_account": account["id"],
             "url": url
         })
@@ -1314,7 +1288,7 @@ class Graphene(object):
         )))
 
         op = operations.Account_update(**{
-            "lock_with_vote": [vote_type, { 
+            "lock_with_vote": [vote_type, {
                 "amount": int(amount),
                 "asset_id": amount.asset["id"]
             }],
@@ -1410,7 +1384,7 @@ class Graphene(object):
         _account = Account(account_to_list, full=False, graphene_instance=self)
         account = Account(account, full=False, graphene_instance=self)
         op = operations.Account_whitelist(**{
-            
+
             "authorizing_account": account["id"],
             "account_to_list": _account["id"],
             "new_listing": account_listing,
@@ -1429,12 +1403,14 @@ class Graphene(object):
             if "default_account" in config:
                 account = config["default_account"]
             else:
-                raise ValueError("You need to provide an withdraw from account")
+                raise ValueError(
+                    "You need to provide an withdraw from account")
         account = Account(account, graphene_instance=self)
-        authorized_account = Account(authorized_account, graphene_instance=self)
+        authorized_account = Account(
+            authorized_account, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
         op = operations.Withdraw_permission_create(**{
-            
+
             "withdraw_from_account": account["id"],
             "authorized_account": authorized_account["id"],
             "withdrawal_limit": {
@@ -1460,13 +1436,15 @@ class Graphene(object):
             if "default_account" in config:
                 account = config["default_account"]
             else:
-                raise ValueError("You need to provide an withdraw from account")
+                raise ValueError(
+                    "You need to provide an withdraw from account")
         account = Account(account, graphene_instance=self)
-        authorized_account = Account(authorized_account, graphene_instance=self)
+        authorized_account = Account(
+            authorized_account, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
-        
+
         op = operations.Withdraw_permission_update(**{
-            
+
             "withdraw_from_account": account["id"],
             "authorized_account": authorized_account["id"],
             "permission_to_update": permission_to_update,
@@ -1491,9 +1469,11 @@ class Graphene(object):
             if "default_account" in config:
                 account = config["default_account"]
             else:
-                raise ValueError("You need to provide an withdraw from account")
+                raise ValueError(
+                    "You need to provide an withdraw from account")
         account = Account(account, graphene_instance=self)
-        withdraw_from_account = Account(withdraw_from_account, graphene_instance=self)
+        withdraw_from_account = Account(
+            withdraw_from_account, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
         from .memo import Memo
         memoObj = Memo(
@@ -1502,7 +1482,7 @@ class Graphene(object):
             graphene_instance=self
         )
         op = operations.Withdraw_permission_claim(**{
-            
+
             "withdraw_permission": withdraw_permission,
             "withdraw_from_account": withdraw_from_account["id"],
             "withdraw_to_account": account["id"],
@@ -1523,11 +1503,13 @@ class Graphene(object):
             if "default_account" in config:
                 account = config["default_account"]
             else:
-                raise ValueError("You need to provide an withdraw from account")
+                raise ValueError(
+                    "You need to provide an withdraw from account")
         account = Account(account, graphene_instance=self)
-        authorized_account = Account(authorized_account, graphene_instance=self)
+        authorized_account = Account(
+            authorized_account, graphene_instance=self)
         op = operations.Withdraw_permission_delete(**{
-            
+
             "withdraw_from_account": account["id"],
             "authorized_account": authorized_account["id"],
             "withdrawal_permission": withdrawal_permission
@@ -1565,7 +1547,7 @@ class Graphene(object):
             raise ValueError('type not in ["linear", "cdd"]')
 
         op = operations.Vesting_balance_create(**{
-            
+
             "creator": account["id"],
             "owner": owner["id"],
             "amount": {
@@ -1602,7 +1584,7 @@ class Graphene(object):
             amount = Amount(amount, asset, graphene_instance=self)
 
         op = operations.Vesting_balance_withdraw(**{
-            
+
             "vesting_balance": vesting_id,
             "owner": account["id"],
             "amount": {
@@ -1642,7 +1624,7 @@ class Graphene(object):
         for proposal_id in proposal_ids:
             proposal = Proposal(proposal_id, graphene_instance=self)
             update_dict = {
-                
+
                 'fee_paying_account': account["id"],
                 'proposal': proposal["id"],
                 "prefix": self.rpc.chain_params["prefix"]
@@ -1688,7 +1670,7 @@ class Graphene(object):
         for proposal_id in proposal_ids:
             proposal = Proposal(proposal_id, graphene_instance=self)
             op.append(operations.Proposal_update(**{
-                
+
                 'fee_paying_account': account["id"],
                 'proposal': proposal["id"],
                 'active_approvals_to_remove': [approver["id"]],
@@ -1699,7 +1681,7 @@ class Graphene(object):
     def proposal_delete(self, proposal, account=None):
         account = Account(account, graphene_instance=self)
         op = operations.Proposal_delete(**{
-            
+
             "fee_paying_account": account["id"],
             # "using_owner_authority": using_owner_authority,
             "proposal": proposal,
@@ -1765,7 +1747,7 @@ class Graphene(object):
         #     cer = settlement_price * 1.05
 
         op = operations.Asset_publish_feed(**{
-            
+
             "publisher": account["id"],
             "asset_id": asset["id"],
             "feed": {
@@ -1793,7 +1775,7 @@ class Graphene(object):
             raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         op = operations.Account_upgrade(**{
-            
+
             "account_to_upgrade": account["id"],
             "upgrade_to_lifetime_member": True,
             "prefix": self.rpc.chain_params["prefix"]
@@ -1810,7 +1792,7 @@ class Graphene(object):
         witness = Witness(witness_identifier, graphene_instance=self)
         account = witness.account
         op = operations.Witness_update(**{
-            
+
             "prefix": self.rpc.chain_params["prefix"],
             "witness": witness["id"],
             "witness_account": account["id"],
@@ -1820,17 +1802,16 @@ class Graphene(object):
         })
         return self.finalizeOp(op, account["name"], "active")
 
-    def create_witness(self,account_name,url,key):
-        account=Account(account_name, graphene_instance=self)
+    def create_witness(self, account_name, url, key):
+        account = Account(account_name, graphene_instance=self)
         op = operations.Witness_create(**{
-            
+
             "prefix": self.rpc.chain_params["prefix"],
             "witness_account": account["id"],
             "url": url,
             "block_signing_key": key,
         })
         return self.finalizeOp(op, account["name"], "active")
-
 
     def asset_reserve(self, amount, asset, account=None):
         """ Reserve/Burn an amount of this shares
@@ -1850,7 +1831,7 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
         op = operations.Asset_reserve(**{
-            
+
             "payer": account["id"],
             "amount_to_reserve": {
                 "amount": int(amount),
@@ -1912,7 +1893,8 @@ class Graphene(object):
         elif payment_type == "ssuance":
             initializer = [3, {}]
         else:
-            raise ValueError('payment_type not in ["burn", "refund", "vesting"]')
+            raise ValueError(
+                'payment_type not in ["burn", "refund", "vesting"]')
 
         op = operations.Worker_create(**{
             "beneficiary": account["id"],
@@ -1943,7 +1925,7 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
         op = operations.Balance_claim(**{
-            
+
             "deposit_to_account": account["id"],
             "balance_to_claim": balance_to_claim,
             "balance_owner_key": balance_owner_key,
@@ -1965,7 +1947,7 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
         op = operations.Asset_claim_fees(**{
-            
+
             "issuer": account["id"],
             "amount_to_claim": {
                 "amount": int(amount),
@@ -1989,7 +1971,7 @@ class Graphene(object):
         amount = Amount(amount, asset, graphene_instance=self)
         _amount = Amount(debt_amount, debt_asset, graphene_instance=self)
         op = operations.Bid_collateral(**{
-            
+
             "bidder": account["id"],
             "additional_collateral": {
                 "amount": int(amount),
@@ -2011,7 +1993,7 @@ class Graphene(object):
                 raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         op = operations.Contract_create(**{
-            
+
             "owner": account["id"],
             "name": name,
             "data": data,
@@ -2034,7 +2016,7 @@ class Graphene(object):
         # else:
         #     account = self.graphene.rpc.lookup_account_names([self.name])[0]
         op = operations.Call_contract_function(**{
-            
+
             "caller": account["id"],
             "contract_id": contract["id"],
             "function_name": function,
@@ -2051,7 +2033,7 @@ class Graphene(object):
                 raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         op = operations.Register_nh_asset_creator(**{
-            
+
             "fee_paying_account": account["id"]
         })
         return self.finalizeOp(op, account["name"], "active")
@@ -2066,7 +2048,7 @@ class Graphene(object):
             raise ValueError("You need to provide a world_view")
         account = Account(account, graphene_instance=self)
         op = operations.Create_world_view(**{
-            
+
             "fee_paying_account": account["id"],
             "world_view": world_view
         })
@@ -2075,7 +2057,7 @@ class Graphene(object):
     def proposal_create(self, proposed_ops, account=None):
         account = Account(account, graphene_instance=self)
         op = operations.Proposal_create(**{
-            
+
             "fee_paying_account": account["id"],
             "proposed_ops": proposed_ops,
             # "expiration_time": formatTimeFromNow(60*60),
@@ -2095,8 +2077,9 @@ class Graphene(object):
             raise ValueError("You need to provide a world view")
         account = Account(account, graphene_instance=self)
         # view_owner = Account(view_owner)
-        view_owner = self.rpc.get_object(self.lookup_world_view(world_view)[0]["world_view_creator"])["creator"]
-        
+        view_owner = self.rpc.get_object(self.lookup_world_view(world_view)[
+                                         0]["world_view_creator"])["creator"]
+
         # op = operations.Proposal_create(**{
         #     "fee": {"amount": 0,
         #             "asset_id": "1.3.0"
@@ -2109,8 +2092,8 @@ class Graphene(object):
             "related_account": account["id"],
             "world_view": world_view,
             "view_owner": view_owner
-            })
-            # "extensions": []
+        })
+        # "extensions": []
         # })
         return self.finalizeOp(op, account["name"], "active")
 
@@ -2130,9 +2113,10 @@ class Graphene(object):
         # describe = json.dumps(describe)
         account = Account(account, graphene_instance=self)
         # assetID = Asset(assetID)["id"]
-        owner_account = (Account(owner, graphene_instance=self) if owner else Account(account, graphene_instance=self))
+        owner_account = (Account(owner, graphene_instance=self)
+                         if owner else Account(account, graphene_instance=self))
         op = operations.Create_nh_asset(**{
-            
+
             "owner": owner_account["id"],
             "fee_paying_account": account["id"],
             "asset_id": assetID,
@@ -2159,7 +2143,7 @@ class Graphene(object):
         # nh_asset_creator = Account(nh_asset_creator)
 
         op = operations.Relate_nh_asset(**{
-            
+
             "nh_asset_creator": account["id"],
             "parent": parent,
             "child": child,
@@ -2176,7 +2160,7 @@ class Graphene(object):
                 raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         op = operations.Delete_nh_asset(**{
-            
+
             "fee_paying_account": account["id"],
             "nh_asset": asset_id
         })
@@ -2195,7 +2179,7 @@ class Graphene(object):
         to_account = Account(to, graphene_instance=self)
         account = Account(account, graphene_instance=self)
         op = operations.Transfer_nh_asset(**{
-            
+
             "from": account["id"],
             "to": to_account["id"],
             "nh_asset": nh_asset_id
@@ -2218,10 +2202,11 @@ class Graphene(object):
                 raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         otcaccount = Account(otcaccount, graphene_instance=self)
-        pending_order_fee = Amount(pending_order_fee_amount, pending_order_fee_asset, graphene_instance=self)
+        pending_order_fee = Amount(
+            pending_order_fee_amount, pending_order_fee_asset, graphene_instance=self)
         price = Amount(price_amount, price, graphene_instance=self)
         op = operations.Create_nh_asset_order(**{
-            "fee": {"amount": 0, "asset_id":"1.3.0"},
+            "fee": {"amount": 0, "asset_id": "1.3.0"},
             "seller": account["id"],
             "otcaccount": otcaccount['id'],
             "pending_orders_fee": {
@@ -2248,7 +2233,7 @@ class Graphene(object):
                 raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         op = operations.Cancel_nh_asset_order(**{
-            
+
             "fee_paying_account": account["id"],
             "order": order,
             "extensions": {}
@@ -2279,7 +2264,7 @@ class Graphene(object):
         price_asset_symbol = order_info["asset_qualifier"]
         # sell_account = Account(seller)
         op = operations.Fill_nh_asset_order(**{
-            
+
             "fee_paying_account": account["id"],
             "order": order,
             "seller": sell_account,
@@ -2303,7 +2288,7 @@ class Graphene(object):
                 raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         op = operations.Create_file(**{
-            
+
             "file_owner": account["id"],
             "file_name": filename,
             "file_content": content
@@ -2332,7 +2317,7 @@ class Graphene(object):
             relate.append(relate_id)
         account = Account(account, graphene_instance=self)
         op = operations.Add_file_relate_account(**{
-            
+
             "file_owner": account["id"],
             "file_id": file_id,
             "related_account": relate
@@ -2352,7 +2337,7 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         file_id = self.get_file(file)["id"]
         op = operations.File_signature(**{
-            
+
             "signature_account": account["id"],
             "file_id": file_id,
             "signature": signature
@@ -2371,8 +2356,10 @@ class Graphene(object):
         #         raise ValueError("You need to provide an account")
         # account = Account(account)
         # parent_file_owner = Account(parent_file_owner)
-        parent_file_owner, parent_file_id = self.get_file(parent_file)["file_owner"], self.get_file(parent_file)["id"]
-        sub_file_owner, sub_file_id = self.get_file(sub_file)["file_owner"], self.get_file(sub_file)["id"]
+        parent_file_owner, parent_file_id = self.get_file(
+            parent_file)["file_owner"], self.get_file(parent_file)["id"]
+        sub_file_owner, sub_file_id = self.get_file(
+            sub_file)["file_owner"], self.get_file(sub_file)["id"]
         # op = operations.Proposal_create(**{
         #     "fee": {"amount": 0,
         #             "asset_id": "1.3.0"
@@ -2389,7 +2376,7 @@ class Graphene(object):
         #     "extensions": []
         # })
         # op = operations.Relate_parent_file(**{
-        #     
+        #
         #     "sub_file_owner": account["id"],
         #     "parent_file": parentfile,
         #     "parent_file_owner": parent_file_owner["id"],
@@ -2410,7 +2397,7 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         contract = Contract(contract, graphene_instance=self)
         op = operations.Revise_contract(**{
-            
+
             "reviser": account["id"],
             "contract_id": contract["id"],
             "data": data,
@@ -2428,7 +2415,7 @@ class Graphene(object):
                 raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         op = operations.Crontab_create(**{
-            
+
             "crontab_creator": account["id"],
             "crontab_ops": crontab_ops,
             "start_time": start_time,
@@ -2448,7 +2435,7 @@ class Graphene(object):
                 raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         op = operations.Crontab_cancel(**{
-            
+
             "fee_paying_account": account["id"],
             "task": task,
             "extensions": {}
@@ -2467,7 +2454,7 @@ class Graphene(object):
                 raise ValueError("You need to provide an account")
         account = Account(account, graphene_instance=self)
         op = operations.Crontab_recover(**{
-            
+
             "crontab_owner": account["id"],
             "crontab": crontab,
             "restart_time": restart_time,
@@ -2494,17 +2481,21 @@ class Graphene(object):
     def list_nh_asset_by_creator(self, nh_asset_creator, page_size, page):
         if not nh_asset_creator:
             raise ValueError("You need to provide nh_asset_creator")
-        nh_asset_creator = Account(nh_asset_creator, graphene_instance=self)["id"]
-        list_nh_asset = self.rpc.list_nh_asset_by_creator(nh_asset_creator, page_size, page)
+        nh_asset_creator = Account(
+            nh_asset_creator, graphene_instance=self)["id"]
+        list_nh_asset = self.rpc.list_nh_asset_by_creator(
+            nh_asset_creator, page_size, page)
         return list_nh_asset
 
     def list_account_nh_asset(self, nh_asset_owner, world_view, page_size, page, _type=3):
         if not (nh_asset_owner or world_view):
-            raise ValueError("You need to provide nh_asset_owner or world_view")
+            raise ValueError(
+                "You need to provide nh_asset_owner or world_view")
         owner = Account(nh_asset_owner, graphene_instance=self)["id"]
         world_view_list = []
         world_view_list.append(world_view)
-        account_nh_asset = self.rpc.list_account_nh_asset(owner, world_view_list, page_size, page, _type)
+        account_nh_asset = self.rpc.list_account_nh_asset(
+            owner, world_view_list, page_size, page, _type)
         return account_nh_asset
 
     def get_nh_creator(self, nh_creator):
@@ -2519,14 +2510,16 @@ class Graphene(object):
             raise ValueError("You need to provide asset symbol or asset id")
         if not world_view:
             raise ValueError("You need to provide world_view")
-        list_nh_asset_order = self.rpc.list_nh_asset_order(asset, world_view, base_describe, page_size, page, is_ascending_order)
+        list_nh_asset_order = self.rpc.list_nh_asset_order(
+            asset, world_view, base_describe, page_size, page, is_ascending_order)
         return list_nh_asset_order
 
     def list_account_nh_asset_order(self, nh_asset_order_owner, page_size, page):
         if not nh_asset_order_owner:
             raise ValueError("You need to provide order_owner")
         account = Account(nh_asset_order_owner, graphene_instance=self)["id"]
-        list_account_nh_asset_order = self.rpc.list_account_nh_asset_order(account, page_size, page)
+        list_account_nh_asset_order = self.rpc.list_account_nh_asset_order(
+            account, page_size, page)
         return list_account_nh_asset_order
 
     def get_file(self, file):
@@ -2540,5 +2533,6 @@ class Graphene(object):
         priv_key = str(brain.get_private_key())
         active_key = str(brain.get_public_key())
         owner_key = str(BrainKey().get_public_key())
-        key = {"owner_key": owner_key, "active_key": active_key, "private_key": priv_key}
+        key = {"owner_key": owner_key,
+               "active_key": active_key, "private_key": priv_key}
         return key

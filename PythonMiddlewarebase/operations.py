@@ -24,7 +24,8 @@ from .objects import (
     ObjectId,
     Worker_initializer,
     Vesting_policy_initializer,
-    Lua
+    Lua,
+    Memo_variant
 )
 
 from PythonMiddleware.storage import configStorage as config
@@ -48,7 +49,7 @@ class Transfer(GrapheneObject):
             if len(args) == 1 and len(kwargs) == 0:
                 kwargs = args[0]
             if "memo" in kwargs and kwargs["memo"]:
-                memo = Optional(Memo(kwargs["memo"]))
+                memo = Optional(Memo_variant(kwargs["memo"]))
             else:
                 memo = Optional(None)
             if "extensions" in kwargs and kwargs["extensions"]:
@@ -317,7 +318,7 @@ class Asset_issue(GrapheneObject):
             if len(args) == 1 and len(kwargs) == 0:
                 kwargs = args[0]
             if "memo" in kwargs and kwargs["memo"]:
-                memo = Optional(Memo(kwargs["memo"]))
+                memo = Optional(Memo_variant(kwargs["memo"]))
             else:
                 memo = Optional(None)
             super().__init__(OrderedDict([

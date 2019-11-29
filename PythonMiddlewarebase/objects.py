@@ -466,5 +466,15 @@ class Lua(Static_variant):
         else:
             raise ValueError("Unknown Lua_type")
         super().__init__(data, id)
+class Memo_variant(Static_variant):
+    def __init__(self,o):
+        id=o[0]
+        if id==0:
+            data = String(o[1])
+        elif id == 1:
+            data = Memo(o[1])
+        else:
+            raise ValueError("Unknown Memo_variant")
+        super().__init__(data, id)
 
 

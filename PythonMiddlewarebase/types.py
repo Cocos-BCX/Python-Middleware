@@ -134,6 +134,8 @@ class String():
 
     def __str__(self):
         return '%s' % str(self.data)
+    def json(self):
+        return '%s' % str(self.data)
 
     def unicodify(self):
         r = []
