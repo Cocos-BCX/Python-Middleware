@@ -496,16 +496,16 @@ pprint(gph.upgrade_account("test1"))
 方法：transfer  
 原型：
 ```python
-    def transfer(self, to, amount, asset, memo=["", 0], account=None):
+    def transfer(self, to, amount, asset, memo=["", 0], account=None):  
 ```
 功能：向目标对象发送代币  
 参数：  
     to：接收方账户名或id  
     amount(int)：发送的代币数量  
     asset：资产ID或代币符号  
-    memo：转账备注，[备注信息, 是否加密]  0 -- 不加密，1 -- 加密 
-    account：发送方账户名或id 
-示例：
+    memo：转账备注，[备注信息, 是否加密]  0 -- 不加密，1 -- 加密  
+    account：发送方账户名或id  
+示例：  
 ```python
 from_account = "nicotest"
 to_account1 = "init7"
@@ -513,8 +513,8 @@ to_account2 = "init8"
 pprint(gph.transfer("test1", 100, "COCOS", defaultAccount))
 pprint(gph.transfer(to=to_account1, amount=11, asset="COCOS", memo=["test memo 0", 0], account=from_account))
 pprint(gph.transfer(to=to_account2, amount=12, asset="1.3.0", memo=["test memo 1", 1], account=from_account))
-```
-示例执行结果：
+```  
+示例执行结果：  
 ```text
 {'expiration': '2019-11-29T09:15:39',
  'extensions': [],

@@ -404,19 +404,19 @@ transaction>>>: {'expiration': '2019-08-16T07:16:38', 'signatures': ['1f5823d16f
 
 ----------
 
-Method: transfer
-Prototype：
+Method: transfer  
+Prototype：  
 ```python
-    def transfer(self, to, amount, asset, memo=["", 0], account=None):
+    def transfer(self, to, amount, asset, memo=["", 0], account=None):  
 ```
-    Function: Send tokens to the recipient
-    Parameters：
-        to：Recipient account name or id
-        amount(int)：Amount of tokens sent
-        asset：Asset ID or token symbol
-        memo：Transfer memo, [transfer_memo_message, is_encrypt], is_encrypt: 0 -- don't encrypt, 1 -- encrypt
-        account：Sender account name or id
-Example:
+    Function: Send tokens to the recipient  
+    Parameters：  
+        to：Recipient account name or id  
+        amount(int)：Amount of tokens sent  
+        asset：Asset ID or token symbol  
+        memo：Transfer memo, [transfer_memo_message, is_encrypt], is_encrypt: 0 -- don't encrypt, 1 -- encrypt  
+        account：Sender account name or id  
+Example:  
 ```python
 from_account = "nicotest"
 to_account1 = "init7"
