@@ -496,41 +496,92 @@ pprint(gph.upgrade_account("test1"))
 方法：transfer  
 原型：
 ```python
-    def transfer(self, to, amount, asset, memo="", account=None):
+    def transfer(self, to, amount, asset, memo=["", 0], account=None):
 ```
 功能：向目标对象发送代币  
 参数：  
-    to：接收方账户名  
+    to：接收方账户名或id  
     amount(int)：发送的代币数量  
     asset：资产ID或代币符号  
-    memo：转账备注  
-    account：发送方账户名  
+    memo：转账备注，[备注信息, 是否加密]  0 -- 不加密，1 -- 加密 
+    account：发送方账户名或id 
 示例：
 ```python
+from_account = "nicotest"
+to_account1 = "init7"
+to_account2 = "init8"
 pprint(gph.transfer("test1", 100, "COCOS", defaultAccount))
+pprint(gph.transfer(to=to_account1, amount=11, asset="COCOS", memo=["test memo 0", 0], account=from_account))
+pprint(gph.transfer(to=to_account2, amount=12, asset="1.3.0", memo=["test memo 1", 1], account=from_account))
 ```
 示例执行结果：
 ```text
-tx.buffer>>>:  {'signatures': ['1f4d1d80ca69281a9257f6e00ed272475de112cfdc86b5a675aa13ee2e119a8b121099a1bf3a7761f57ea0eff8175cd119376f01223b0ecce21c40008077106e05'], 'ref_block_prefix': 1486205928, 'extensions': [], 'expiration': '2019-09-20T09:19:42', 'ref_block_num': 19218, 'operations': [[0, {'from': '1.2.15', 'amount': {'amount': 10000000, 'asset_id': '1.3.0'}, 'extensions': [], 'fee': {'amount': 2089843, 'asset_id': '1.3.0'}, 'to': '1.2.16', 'memo': {'from': 'COCOS5X4bfMnAmeWhLoiHKUNrRu7D3LTXKBZQkZvWGj9YCTDBAYaSXU', 'to': 'COCOS6nmywkhatpmMCruqpm19wsG3gAT1NnvdxPSHaZLJvtsZwH7xCR', 'nonce': 11976393269872803420, 'message': 'cd139d20364db6f389ca86c1d750d631'}}]]}
-transaction>>>: {'signatures': ['1f4d1d80ca69281a9257f6e00ed272475de112cfdc86b5a675aa13ee2e119a8b121099a1bf3a7761f57ea0eff8175cd119376f01223b0ecce21c40008077106e05'], 'ref_block_prefix': 1486205928, 'extensions': [], 'expiration': '2019-09-20T09:19:42', 'ref_block_num': 19218, 'operations': [[0, {'from': '1.2.15', 'amount': {'amount': 10000000, 'asset_id': '1.3.0'}, 'extensions': [], 'fee': {'amount': 2089843, 'asset_id': '1.3.0'}, 'to': '1.2.16', 'memo': {'from': 'COCOS5X4bfMnAmeWhLoiHKUNrRu7D3LTXKBZQkZvWGj9YCTDBAYaSXU', 'to': 'COCOS6nmywkhatpmMCruqpm19wsG3gAT1NnvdxPSHaZLJvtsZwH7xCR', 'nonce': 11976393269872803420, 'message': 'cd139d20364db6f389ca86c1d750d631'}}]]}
-['b00062b2d59acc8ba66c97d708a62b9ebee551f01c403b7787b3800e8ab97169',
- {'block': 84755,
-  'expiration': '2019-09-20T09:19:42',
-  'extensions': [],
-  'operation_results': [[1, {'real_running_time': 400}]],
-  'operations': [[0,
-                  {'amount': {'amount': 10000000, 'asset_id': '1.3.0'},
-                   'extensions': [],
-                   'fee': {'amount': 2089843, 'asset_id': '1.3.0'},
-                   'from': '1.2.15',
-                   'memo': {'from': 'COCOS5X4bfMnAmeWhLoiHKUNrRu7D3LTXKBZQkZvWGj9YCTDBAYaSXU',
-                            'message': 'cd139d20364db6f389ca86c1d750d631',
-                            'nonce': '11976393269872803420',
-                            'to': 'COCOS6nmywkhatpmMCruqpm19wsG3gAT1NnvdxPSHaZLJvtsZwH7xCR'},
-                   'to': '1.2.16'}]],
-  'ref_block_num': 19218,
-  'ref_block_prefix': 1486205928,
-  'signatures': ['1f4d1d80ca69281a9257f6e00ed272475de112cfdc86b5a675aa13ee2e119a8b121099a1bf3a7761f57ea0eff8175cd119376f01223b0ecce21c40008077106e05']}]
+{'expiration': '2019-11-29T09:15:39',
+ 'extensions': [],
+ 'operations': [[0,
+                 {'amount': {'amount': 1100000, 'asset_id': '1.3.0'},
+                  'extensions': [],
+                  'from': '1.2.16',
+                  'memo': [0, 'test memo 0'],
+                  'to': '1.2.12'}]],
+ 'ref_block_num': 10048,
+ 'ref_block_prefix': 307051849,
+ 'signatures': ['206433a625fdcbe46c2dbc96e73759039dc11dc4b5cca25bbd7c57df2481c31bc94fdcf4cc311eefa695b3dde56a2a9de0454bc3b4fbd08d7daee46b807f4dca6b']}
+{'block_num': 10049,
+ 'transaction': {'expiration': '2019-11-29T09:15:39',
+                 'extensions': [],
+                 'operation_results': [[1,
+                                        {'fees': [{'amount': 2013671,
+                                                   'asset_id': '1.3.0'}],
+                                         'real_running_time': 77}]],
+                 'operations': [[0,
+                                 {'amount': {'amount': 1100000,
+                                             'asset_id': '1.3.0'},
+                                  'extensions': [],
+                                  'from': '1.2.16',
+                                  'memo': [0, 'test memo 0'],
+                                  'to': '1.2.12'}]],
+                 'ref_block_num': 10048,
+                 'ref_block_prefix': 307051849,
+                 'signatures': ['206433a625fdcbe46c2dbc96e73759039dc11dc4b5cca25bbd7c57df2481c31bc94fdcf4cc311eefa695b3dde56a2a9de0454bc3b4fbd08d7daee46b807f4dca6b']},
+ 'trx_id': '0d8ca24ee057cc6df3fe9b1ab92211c3cd37b8081ca756237630cd22868ef0ea'}
+{'expiration': '2019-11-29T09:15:43',
+ 'extensions': [],
+ 'operations': [[0,
+                 {'amount': {'amount': 1200000, 'asset_id': '1.3.0'},
+                  'extensions': [],
+                  'from': '1.2.16',
+                  'memo': [1,
+                           {'from': 'COCOS56a5dTnfGpuPoWACnYj65dahcXMpTrNQkV3hHWCFkLxMF5mXpx',
+                            'message': '8b39723f22fda4c1475fb0bc7ffc47fe',
+                            'nonce': 2935580316419343781,
+                            'to': 'COCOS5fW5NuvGjaVQTGwcJLwogxheq2KMjm3y5ccAShJqQnB3gNkGbL'}],
+                  'to': '1.2.13'}]],
+ 'ref_block_num': 10049,
+ 'ref_block_prefix': 1721579182,
+ 'signatures': ['2066f971cccf92d6bfba4b06b802a65b6098d6d7262db103b41c256c15ce79c23003de26a17d514ed8e22a9099f3a5c9300e8fe1dfe5ee5419f66ceb4de5dd6f46']}
+{'block_num': 10051,
+ 'transaction': {'expiration': '2019-11-29T09:15:43',
+                 'extensions': [],
+                 'operation_results': [[1,
+                                        {'fees': [{'amount': 2090820,
+                                                   'asset_id': '1.3.0'}],
+                                         'real_running_time': 77}]],
+                 'operations': [[0,
+                                 {'amount': {'amount': 1200000,
+                                             'asset_id': '1.3.0'},
+                                  'extensions': [],
+                                  'from': '1.2.16',
+                                  'memo': [1,
+                                           {'from': 'COCOS56a5dTnfGpuPoWACnYj65dahcXMpTrNQkV3hHWCFkLxMF5mXpx',
+                                            'message': '8b39723f22fda4c1475fb0bc7ffc47fe',
+                                            'nonce': '2935580316419343781',
+                                            'to': 'COCOS5fW5NuvGjaVQTGwcJLwogxheq2KMjm3y5ccAShJqQnB3gNkGbL'}],
+                                  'to': '1.2.13'}]],
+                 'ref_block_num': 10049,
+                 'ref_block_prefix': 1721579182,
+                 'signatures': ['2066f971cccf92d6bfba4b06b802a65b6098d6d7262db103b41c256c15ce79c23003de26a17d514ed8e22a9099f3a5c9300e8fe1dfe5ee5419f66ceb4de5dd6f46']},
+ 'trx_id': '81e6aca64fbd3d9b288a15395a9789b2220f819e492ef314b689ed67f0d245a2'}
 ```
 
 方法：asset_create  

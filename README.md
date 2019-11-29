@@ -64,25 +64,40 @@ API User Guide
 
 ### Wallet
 
-* [Create a wallet by Graphene](#Create-a-wallet-by-Graphene)
-* [Create a wallet 1](#Create-a-wallet-1)
-* [Create a wallet 2](#Create-a-wallet-2)
-* [Unlock the wallet](#Unlock-the-wallet)
-* [Lock the wallet](#Lock-the-wallet)
-* [Modify wallet unlock password](#Modify-wallet-unlock-password)
-* [Add private key to the wallet](#Add-private-key-to-the-wallet)
-* [Get the private key of the wallet](#Get-the-private-key-of-the-wallet)
-* [Remove the private key in the wallet](#Remove-the-private-key-in-the-wallet)
-* [Encrypt wallet private key](#Encrypt-wallet-private-key)
-* [Decrypt wallet private key](#Decrypt-wallet-private-key)
-* [Get owner/active/memo private key](#Get-owneractivememo-private-key)
-* [Get account ID through private key](#Get-account-ID-through-private-key)
-* [Get account ID through public key](#Get-account-ID-throug-public-key)
-* [Get account info](#Get-account-info)
-* [Get public key type](#Get-public-key-type)
-* [Get all the accounts in the wallet](#Get-all-the-accounts-in-the-wallet)
-* [Get all the public keys in the wallet](#Get-all-the-public-keys-in-the-wallet)
-* [Wipe the private key in the wallet](#Wipe-the-private-key-in-the-wallet)
+- [Python Middleware For Cocos—BCX](#python-middleware-for-cocosbcx)
+  - [Get Started](#get-started)
+  - [API User Guide](#api-user-guide)
+  - [* Proposal](#proposal)
+    - [Wallet](#wallet)
+      - [Create a wallet by Graphene](#create-a-wallet-by-graphene)
+      - [Create a wallet 1](#create-a-wallet-1)
+      - [Create a wallet 2](#create-a-wallet-2)
+      - [Unlock the wallet](#unlock-the-wallet)
+      - [Lock the wallet](#lock-the-wallet)
+      - [Modify wallet unlock password](#modify-wallet-unlock-password)
+      - [Add private key to the wallet](#add-private-key-to-the-wallet)
+      - [Get the private key of the wallet](#get-the-private-key-of-the-wallet)
+      - [Remove the private key in the wallet](#remove-the-private-key-in-the-wallet)
+      - [Encrypt wallet private key](#encrypt-wallet-private-key)
+      - [Decrypt wallet private key](#decrypt-wallet-private-key)
+      - [Get owner/active/memo private key](#get-owneractivememo-private-key)
+      - [Get account ID through private key](#get-account-id-through-private-key)
+      - [Get account ID through public key](#get-account-id-through-public-key)
+      - [Get account info](#get-account-info)
+      - [Get public key type](#get-public-key-type)
+      - [Get all the accounts in the wallet](#get-all-the-accounts-in-the-wallet)
+      - [Get all the public keys in the wallet](#get-all-the-public-keys-in-the-wallet)
+      - [Wipe the private key in the wallet](#wipe-the-private-key-in-the-wallet)
+  - [### Account](#account)
+    - [Method：upgrade_account](#methodupgradeaccount)
+    - [Asset](#asset)
+    - [NH Asset](#nh-asset)
+    - [Contract](#contract)
+    - [Market](#market)
+    - [Witness](#witness)
+    - [Committee](#committee)
+    - [Proposal](#proposal)
+  - [Main-Packages](#main-packages)
 
 #### Create a wallet by Graphene
     Method: newWallet(pwd)
@@ -392,41 +407,92 @@ transaction>>>: {'expiration': '2019-08-16T07:16:38', 'signatures': ['1f5823d16f
 Method: transfer
 Prototype：
 ```python
-    def transfer(self, to, amount, asset, memo="", account=None):
+    def transfer(self, to, amount, asset, memo=["", 0], account=None):
 ```
     Function: Send tokens to the recipient
     Parameters：
-        to：Recipient account name
+        to：Recipient account name or id
         amount(int)：Amount of tokens sent
         asset：Asset ID or token symbol
-        memo：Transfer memo
-        account：Sender account name
+        memo：Transfer memo, [transfer_memo_message, is_encrypt], is_encrypt: 0 -- don't encrypt, 1 -- encrypt
+        account：Sender account name or id
 Example:
 ```python
+from_account = "nicotest"
+to_account1 = "init7"
+to_account2 = "init8"
 pprint(gph.transfer("test1", 100, "COCOS", defaultAccount))
+pprint(gph.transfer(to=to_account1, amount=11, asset="COCOS", memo=["test memo 0", 0], account=from_account))
+pprint(gph.transfer(to=to_account2, amount=12, asset="1.3.0", memo=["test memo 1", 1], account=from_account))
 ```
 Result:
 ```text
-tx.buffer>>>:  {'signatures': ['1f4d1d80ca69281a9257f6e00ed272475de112cfdc86b5a675aa13ee2e119a8b121099a1bf3a7761f57ea0eff8175cd119376f01223b0ecce21c40008077106e05'], 'ref_block_prefix': 1486205928, 'extensions': [], 'expiration': '2019-09-20T09:19:42', 'ref_block_num': 19218, 'operations': [[0, {'from': '1.2.15', 'amount': {'amount': 10000000, 'asset_id': '1.3.0'}, 'extensions': [], 'fee': {'amount': 2089843, 'asset_id': '1.3.0'}, 'to': '1.2.16', 'memo': {'from': 'COCOS5X4bfMnAmeWhLoiHKUNrRu7D3LTXKBZQkZvWGj9YCTDBAYaSXU', 'to': 'COCOS6nmywkhatpmMCruqpm19wsG3gAT1NnvdxPSHaZLJvtsZwH7xCR', 'nonce': 11976393269872803420, 'message': 'cd139d20364db6f389ca86c1d750d631'}}]]}
-transaction>>>: {'signatures': ['1f4d1d80ca69281a9257f6e00ed272475de112cfdc86b5a675aa13ee2e119a8b121099a1bf3a7761f57ea0eff8175cd119376f01223b0ecce21c40008077106e05'], 'ref_block_prefix': 1486205928, 'extensions': [], 'expiration': '2019-09-20T09:19:42', 'ref_block_num': 19218, 'operations': [[0, {'from': '1.2.15', 'amount': {'amount': 10000000, 'asset_id': '1.3.0'}, 'extensions': [], 'fee': {'amount': 2089843, 'asset_id': '1.3.0'}, 'to': '1.2.16', 'memo': {'from': 'COCOS5X4bfMnAmeWhLoiHKUNrRu7D3LTXKBZQkZvWGj9YCTDBAYaSXU', 'to': 'COCOS6nmywkhatpmMCruqpm19wsG3gAT1NnvdxPSHaZLJvtsZwH7xCR', 'nonce': 11976393269872803420, 'message': 'cd139d20364db6f389ca86c1d750d631'}}]]}
-['b00062b2d59acc8ba66c97d708a62b9ebee551f01c403b7787b3800e8ab97169',
- {'block': 84755,
-  'expiration': '2019-09-20T09:19:42',
-  'extensions': [],
-  'operation_results': [[1, {'real_running_time': 400}]],
-  'operations': [[0,
-                  {'amount': {'amount': 10000000, 'asset_id': '1.3.0'},
-                   'extensions': [],
-                   'fee': {'amount': 2089843, 'asset_id': '1.3.0'},
-                   'from': '1.2.15',
-                   'memo': {'from': 'COCOS5X4bfMnAmeWhLoiHKUNrRu7D3LTXKBZQkZvWGj9YCTDBAYaSXU',
-                            'message': 'cd139d20364db6f389ca86c1d750d631',
-                            'nonce': '11976393269872803420',
-                            'to': 'COCOS6nmywkhatpmMCruqpm19wsG3gAT1NnvdxPSHaZLJvtsZwH7xCR'},
-                   'to': '1.2.16'}]],
-  'ref_block_num': 19218,
-  'ref_block_prefix': 1486205928,
-  'signatures': ['1f4d1d80ca69281a9257f6e00ed272475de112cfdc86b5a675aa13ee2e119a8b121099a1bf3a7761f57ea0eff8175cd119376f01223b0ecce21c40008077106e05']}]
+{'expiration': '2019-11-29T09:15:39',
+ 'extensions': [],
+ 'operations': [[0,
+                 {'amount': {'amount': 1100000, 'asset_id': '1.3.0'},
+                  'extensions': [],
+                  'from': '1.2.16',
+                  'memo': [0, 'test memo 0'],
+                  'to': '1.2.12'}]],
+ 'ref_block_num': 10048,
+ 'ref_block_prefix': 307051849,
+ 'signatures': ['206433a625fdcbe46c2dbc96e73759039dc11dc4b5cca25bbd7c57df2481c31bc94fdcf4cc311eefa695b3dde56a2a9de0454bc3b4fbd08d7daee46b807f4dca6b']}
+{'block_num': 10049,
+ 'transaction': {'expiration': '2019-11-29T09:15:39',
+                 'extensions': [],
+                 'operation_results': [[1,
+                                        {'fees': [{'amount': 2013671,
+                                                   'asset_id': '1.3.0'}],
+                                         'real_running_time': 77}]],
+                 'operations': [[0,
+                                 {'amount': {'amount': 1100000,
+                                             'asset_id': '1.3.0'},
+                                  'extensions': [],
+                                  'from': '1.2.16',
+                                  'memo': [0, 'test memo 0'],
+                                  'to': '1.2.12'}]],
+                 'ref_block_num': 10048,
+                 'ref_block_prefix': 307051849,
+                 'signatures': ['206433a625fdcbe46c2dbc96e73759039dc11dc4b5cca25bbd7c57df2481c31bc94fdcf4cc311eefa695b3dde56a2a9de0454bc3b4fbd08d7daee46b807f4dca6b']},
+ 'trx_id': '0d8ca24ee057cc6df3fe9b1ab92211c3cd37b8081ca756237630cd22868ef0ea'}
+{'expiration': '2019-11-29T09:15:43',
+ 'extensions': [],
+ 'operations': [[0,
+                 {'amount': {'amount': 1200000, 'asset_id': '1.3.0'},
+                  'extensions': [],
+                  'from': '1.2.16',
+                  'memo': [1,
+                           {'from': 'COCOS56a5dTnfGpuPoWACnYj65dahcXMpTrNQkV3hHWCFkLxMF5mXpx',
+                            'message': '8b39723f22fda4c1475fb0bc7ffc47fe',
+                            'nonce': 2935580316419343781,
+                            'to': 'COCOS5fW5NuvGjaVQTGwcJLwogxheq2KMjm3y5ccAShJqQnB3gNkGbL'}],
+                  'to': '1.2.13'}]],
+ 'ref_block_num': 10049,
+ 'ref_block_prefix': 1721579182,
+ 'signatures': ['2066f971cccf92d6bfba4b06b802a65b6098d6d7262db103b41c256c15ce79c23003de26a17d514ed8e22a9099f3a5c9300e8fe1dfe5ee5419f66ceb4de5dd6f46']}
+{'block_num': 10051,
+ 'transaction': {'expiration': '2019-11-29T09:15:43',
+                 'extensions': [],
+                 'operation_results': [[1,
+                                        {'fees': [{'amount': 2090820,
+                                                   'asset_id': '1.3.0'}],
+                                         'real_running_time': 77}]],
+                 'operations': [[0,
+                                 {'amount': {'amount': 1200000,
+                                             'asset_id': '1.3.0'},
+                                  'extensions': [],
+                                  'from': '1.2.16',
+                                  'memo': [1,
+                                           {'from': 'COCOS56a5dTnfGpuPoWACnYj65dahcXMpTrNQkV3hHWCFkLxMF5mXpx',
+                                            'message': '8b39723f22fda4c1475fb0bc7ffc47fe',
+                                            'nonce': '2935580316419343781',
+                                            'to': 'COCOS5fW5NuvGjaVQTGwcJLwogxheq2KMjm3y5ccAShJqQnB3gNkGbL'}],
+                                  'to': '1.2.13'}]],
+                 'ref_block_num': 10049,
+                 'ref_block_prefix': 1721579182,
+                 'signatures': ['2066f971cccf92d6bfba4b06b802a65b6098d6d7262db103b41c256c15ce79c23003de26a17d514ed8e22a9099f3a5c9300e8fe1dfe5ee5419f66ceb4de5dd6f46']},
+ 'trx_id': '81e6aca64fbd3d9b288a15395a9789b2220f819e492ef314b689ed67f0d245a2'}
 ```
 
 Method: asset_create
