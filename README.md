@@ -20,12 +20,14 @@ sudo apt-get install python3.5 -y
 
 ### 1.2 Python-Middleware链参数配置  
 主要是chain_id，修改文件： PythonMiddlewarebase/chains.py  
-``` text
+``` python
 known_chains = {
-"xxxxxx": {
-    "chain_id": "xxxxxx", # 链ID
-    "core_symbol": "xxxxxx", # 核心资产，默认COCOS
-    "prefix": "xxxxxx"} # 前缀，默认COCOS
+    "xxxxxx": {
+        "chain_id": "xxxxxx", # 链ID
+        "core_symbol": "xxxxxx", # 核心资产，默认COCOS
+        "prefix": "xxxxxx" # 前缀，默认COCOS
+    }
+}
 ```  
 
 示例：  
