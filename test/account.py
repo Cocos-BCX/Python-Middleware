@@ -12,9 +12,9 @@ gph = Graphene(node=nodeAddress, blocking=True)
 set_shared_graphene_instance(gph) 
 
 #account info for test
-defaultAccount="nicotest"
-privateKey="5J2SChqa9QxrCkdMor9VC2k9NT4R4ctRrJA6odQCPkb3yL89vxo"
-pub="COCOS56a5dTnfGpuPoWACnYj65dahcXMpTrNQkV3hHWCFkLxMF5mXpx"
+defaultAccount="test1"
+privateKey="5JAt3WmMCqQvAqqq4Mr7ZisN8ztrrPZCTHCN7f8Vrx8j1cHY4hy"
+pub="COCOS8m1rD2w5q2fJB89MaNJRhnYppdrkEtWB71FLMjfL2xXhCnXAqn"
 
 #创建钱包
 if gph.wallet.created() is False: 
