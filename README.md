@@ -582,15 +582,16 @@ transaction>>>: {'signatures': ['2015f7d1371d701d5ecbaef348ffed1120bc391cc0f8767
   'signatures': ['2015f7d1371d701d5ecbaef348ffed1120bc391cc0f8767492f1d4f271536dfdea0c62998134222d66b1402284f322eef4ae01087ee373ec4b3e5b68ca92266459']}]
 ```
 
-    Method: asset_issue
-    Function: Issue token
-    Parameters:
-        amount(int): Issuance amount
-        asset: Token to be issued
-        issue_to_account: target account
-        memo: Additional message (not required)
-        account: Token creator
-    Example:
+    Method: asset_issue  
+        def asset_issue(self, amount, asset, issue_to_account, memo=["",0], account=None)  
+    Function: Issue token  
+    Parameters:  
+        amount(int): Issuance amount  
+        asset: Token to be issued  
+        issue_to_account: target account  
+        memo: Additional message (not required), [memo_str, is_encrypt], is_encrypt: 0 -- don't encrypt, 1 -- encrypt  
+        account: Token creator  
+    Example:  
 
 ```python
 pprint(gph.asset_issue(10000, "TESTS", "test1", account="test1"))

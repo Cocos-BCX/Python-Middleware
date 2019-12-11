@@ -671,12 +671,13 @@ transaction>>>: {'signatures': ['2015f7d1371d701d5ecbaef348ffed1120bc391cc0f8767
 ```
 
 方法：asset_issue  
+原型：def asset_issue(self, amount, asset, issue_to_account, memo=["",0], account=None)  
 功能：代币资产token发行  
 参数：  
     amount(int)：发行数量  
     asset：发行资产符号  
     issue_to_account：发行对象  
-    memo：附加消息(非必填)  
+    memo：附加消息(非必填)  [memo_str, is_encrypt], is_encrypt: 0 -- 对memo_str不加密, 1 -- encrypt  对memo_str加密  
     account：代币创建者  
 示例：
 ```python
