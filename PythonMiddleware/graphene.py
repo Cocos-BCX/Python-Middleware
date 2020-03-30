@@ -1516,6 +1516,11 @@ class Graphene(object):
         })
         return self.finalizeOp(op, account, "active")
 
+    def get_vesting_balances(self, account_id_or_name):
+        account_id = Account(account_id_or_name, graphene_instance=self)["id"]
+        vesting_objects = self.rpc.get_vesting_balances(account_id)
+        return vesting_objects
+
     def vesting_balance_create(self, owner, amount, asset, start, _type="cdd", vesting_cliff_seconds=0, vesting_duration_seconds=0, vesting_seconds=0, account=None):
         if not start:
             start = datetime.utcnow()
