@@ -271,6 +271,8 @@ class Graphene(object):
         account = Account(account, graphene_instance=self)
         amount = Amount(amount, asset, graphene_instance=self)
         to = Account(to, graphene_instance=self)
+        if account["id"] == to["id"]:
+            raise ValueError("from != to account")
         memoObj=None
         if(len(memo[0]) != 0):
             if(memo[1] == 0):
