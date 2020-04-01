@@ -146,6 +146,7 @@ class Graphene(object):
 
         self.wallet = Wallet(self.rpc, **kwargs)
         self.txbuffer = TransactionBuilder(graphene_instance=self)
+        self.sharetxbuffer = bool(kwargs.get("sharetxbuffer", False))
 
     def connect(self,
                 node="",
@@ -196,6 +197,8 @@ class Graphene(object):
                 posting permission. Neither can you use different
                 accounts for different operations!
         """
+        if not self.sharetxbuffer:
+            self.txbuffer = TransactionBuilder(graphene_instance=self)
         # Append transaction
         self.txbuffer.appendOps(ops)
 
