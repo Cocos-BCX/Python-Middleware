@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 from setuptools import setup
+#from distutils.sysconfig import get_python_lib
+#import os
 
 # Work around mbcs bug in distutils.
 # http://bugs.python.org/issue10945
@@ -11,6 +12,14 @@ try:
 except LookupError:
     ascii = codecs.lookup('ascii')
     codecs.register(lambda name, enc=ascii: {True: enc}.get(name == 'mbcs'))
+
+#lib_path = get_python_lib()
+#a_path = "./PythonMiddleware"
+#b_path = "./PythonMiddlewareapi"
+#c_path = "./PythonMiddlewarebase"
+#os.system("cp -rf {} {}".format(a_path,lib_path))
+#os.system("cp -rf {} {}".format(b_path,lib_path))
+#os.system("cp -rf {} {}".format(c_path,lib_path))
 
 VERSION = '1.0.0'
 
@@ -39,8 +48,8 @@ setup(
         'Topic :: Office/Business :: Financial',
     ],
     install_requires=[
-        "ecdsa==0.13",
-        "requests==2.22.0",
+        "ecdsa==0.13.3",
+        "requests==2.20.0",
         "websocket-client==0.48.0",
         "pylibscrypt==1.7.1",
         "pycryptodome==3.6.6",
@@ -50,6 +59,9 @@ setup(
         "scrypt==0.8.6",
         "pycrypto==2.6.1",  # for AES, installed through graphenelib already
     ],
+    # dependency_links = [
+    #   "https://github.com/sfbahr/PyCrypto-Wheels/raw/master/pycrypto-2.6.1-cp35-none-win_amd64.whl",
+    # ],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     include_package_data=True,

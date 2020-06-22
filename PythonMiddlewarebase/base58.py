@@ -14,6 +14,13 @@ PREFIX = default_prefix
 
 known_prefixes = [
     PREFIX,
+    "ZKC",
+    "BTS",
+    "MUSE",
+    "TEST",
+    "STM",
+    "GLX",
+    "GLS"
 ]
 
 

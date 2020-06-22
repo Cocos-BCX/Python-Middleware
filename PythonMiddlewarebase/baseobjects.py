@@ -35,7 +35,7 @@ class Operation():
         else:
             self.op = op
             # print("op", self.op)
-            self.name = type(self.op).__name__.lower()  # also store name  关键字key 转化为小写用于匹配
+            self.name = type(self.op).__name__.lower()  # also store name  nico read ：： 关键字key 转化为小写用于匹配
             self.opId = self.operations()[self.name]
 
     def operations(self):

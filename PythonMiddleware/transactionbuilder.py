@@ -11,6 +11,7 @@ from .exceptions import (
 )
 from PythonMiddleware.instance import shared_graphene_instance
 import logging
+from pprint import pprint
 log = logging.getLogger(__name__)
 
 
@@ -22,6 +23,7 @@ class TransactionBuilder(dict):
     def __init__(self, tx={}, graphene_instance=None):
         self.graphene = graphene_instance or shared_graphene_instance()
         self.clear()
+        # print("tx>>", tx)
         if not isinstance(tx, dict):
             raise ValueError("Invalid TransactionBuilder Format")
         super(TransactionBuilder, self).__init__(tx)
@@ -112,7 +114,6 @@ class TransactionBuilder(dict):
                 graphene_instance=self.graphene
             )
             ops = operations.Proposal_create(**{
-                "fee": {"amount": 0, "asset_id": "1.3.0"},
                 "fee_paying_account": proposer["id"],
                 "expiration_time": transactions.formatTimeFromNow(
                     self.graphene.proposal_expiration),
@@ -122,12 +123,24 @@ class TransactionBuilder(dict):
             })
             ops = [Operation(ops)]
             # print("hahahaha")
+        elif self.graphene.crontaber:
+            ops = [operations.Op_wrapper(op=o) for o in list(self.ops)]
+            crontab_creator = Account(self.graphene.crontaber, graphene_instance=self.graphene)
+            ops = operations.Crontab_create(**{
+                "crontab_creator": crontab_creator["id"],
+                "crontab_ops": [o.json() for o in ops],
+                "start_time": self.graphene.crontab_start_time,
+                "execute_interval": self.graphene.crontab_execute_interval,
+                "scheduled_execute_times": self.graphene.crontab_scheduled_execute_times,
+                "extensions": {}
+            })
+            ops = [Operation(ops)]
         else:
             ops = [Operation(o) for o in list(self.ops)]
             # for i in ops:
                 # print("ops>>>:", i)
         # print("ws:", self.graphene.rpc.get_required_fees([i.json() for i in ops], "1.3.0"))
-        ops = transactions.addRequiredFees(self.graphene.rpc, ops)
+        # ops = transactions.addRequiredFees(self.graphene.rpc, ops)
         # print("ops>>>:", ops)
         expiration = transactions.formatTimeFromNow(self.graphene.expiration)
         ref_block_num, ref_block_prefix = transactions.getBlockParams(self.graphene.rpc)
@@ -138,6 +151,7 @@ class TransactionBuilder(dict):
             expiration=expiration,
             operations=ops
         )
+        # pprint(tx)
         super(TransactionBuilder, self).__init__(tx.json())
 
     def sign(self):
@@ -203,10 +217,11 @@ class TransactionBuilder(dict):
 
         tx = self.json()
         # self.verify_authority()
-        print("tx======>>:",tx)
+        pprint(tx)
         # Broadcast
         try:
-            self.graphene.rpc.broadcast_transaction(tx, api="network_broadcast")
+            tx_id = self.graphene.rpc.broadcast_transaction(tx, api="network_broadcast")
+            # return tx_id
         except Exception as e:
             raise e
 
@@ -217,7 +232,7 @@ class TransactionBuilder(dict):
                 mode=("head" if self.graphene.blocking == "head" else "irreversible"),
                 graphene_instance=self.graphene
             )
-            tx = chain.awaitTxConfirmation(tx)
+            tx = chain.awaitTxConfirmation(tx_id)
             return tx
 
         return self
@@ -270,6 +285,7 @@ class TransactionBuilder(dict):
                 self["missing_signatures"].extend(
                     [x[0] for x in account_auth_account[permission]["key_auths"]]
                 )
+        # print("self", self)
 
     def json(self):
         """ Show the transaction as plain json

@@ -1,16 +1,19 @@
 default_prefix = "COCOS"
 
 known_chains = {
-    "COCOS": {
-        "chain_id": "7d89b84f22af0b150780a2b121aa6c715b19261c8b7fe0fda3a564574ed7d3e9",
+    "prod": {
+        "chain_id": "6057d856c398875cac2650fe33caef3d5f6b403d184c5154abbff526ec1143c4",
         "core_symbol": "COCOS",
-        "prefix": "COCOS"},
-    # "COCOS": {
-    #     "chain_id": "9fc429a48b47447afa5e6618fde46d1a5f7b2266f00ce60866f9fdd92236e137",
-    #     "core_symbol": "COCOS",
-    #     "prefix": "COCOS"},
-    # "COCOS": {
-    #     "chain_id": "53b98adf376459cc29e5672075ed0c0b1672ea7dce42b0b1fe5e021c02bda640",
-    #     "core_symbol": "COCOS",
-    #     "prefix": "COCOS"},
+        "prefix": "COCOS"
+    },
+    "testnet": {
+        "chain_id": "1ae3653a3105800f5722c5bda2b55530d0e9e8654314e2f3dc6d2b010da641c5",
+        "core_symbol": "COCOS",
+        "prefix": "COCOS"
+    },
+    "local": {
+        "chain_id": "179db3c6a2e08d610f718f05e9cc2aabad62aff80305b9621b162b8b6f2fd79f",
+        "core_symbol": "COCOS",
+        "prefix": "COCOS"
     }
+}
