@@ -288,17 +288,24 @@ class Wallet():
         pub = format(PrivateKey(wif).pubkey, self.prefix)
         return self.getAccountFromPublicKey(pub)
 
-    def getAccountFromPublicKey(self, pub):
-        """ Obtain account name from public key
+    def getAccountFromPublicKey(self, pub, flag=False):
+        """ Obtain account name from public key, 
+            flag=True, return all account
         """
         # FIXME, this only returns the first associated key.
         # If the key is used by multiple accounts, this
         # will surely lead to undesired behavior
-        names = self.rpc.get_key_references([pub])[0]
+        key_references = self.rpc.get_key_references([pub])
+        if not key_references:
+            return None
+        names = key_references[0]
         if not names:
             return None
         else:
-            return names[0]
+            if flag:
+                return names
+            else:
+                return names[0]
 
     def getAccount(self, pub):
         """ Get the account data for a public key
@@ -320,6 +327,30 @@ class Wallet():
                     "type": keyType,
                     "pubkey": pub
                     }
+
+    def getAccountsFromPublicKey(self, pub):
+        """ Get all the account data for a public key
+        """
+        ret = []
+        account_ids = self.getAccountFromPublicKey(pub, True)
+        if account_ids:
+            for id in account_ids:
+                try:
+                    account = Account(id)
+                except:
+                    continue
+                keyType = self.getKeyType(account, pub)
+                ret.append({"name": account["name"],
+                        "account": account,
+                        "type": keyType,
+                        "pubkey": pub
+                        })
+        if not ret:
+            ret.append({"name": None,
+                        "type": None,
+                        "pubkey": pub
+                        })
+        return ret
 
     def getKeyType(self, account, pub):
         """ Get key type
