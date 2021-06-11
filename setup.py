@@ -53,7 +53,7 @@ setup(
         "websocket-client==0.48.0",
         "pylibscrypt==1.7.1",
         "pycryptodome==3.6.6",
-        "websockets==6.0",
+        "websockets==9.1",
         "appdirs==1.4.3",
         "Events==0.3",
         "scrypt==0.8.6",
